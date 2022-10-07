@@ -49,7 +49,7 @@ function TaskList() {
   };
 
   return (
-    <div className="flex flex-col w-2/6 lg:w-[440px] gap-3 text-white font-medium">
+    <div className="flex flex-col w-full lg:w-[440px] gap-3 text-white font-medium">
       <span className="">
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -54,8 +54,8 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
 
   return (
     <div className="h-[230px]">
-      <div className="h-[200px] w-[300px] md:w-[375px] lg:w-[450px] lg:h-[230px] lg:mb-12 bg-zinc-700 rounded-md text-center">
-        <h1 className="text-8xl lg:text-9xl font-semibold text-white pt-8">{displayTime}</h1>
+      <div className="h-[300px] w-[500px] md:w-[375px] md:h-[200px] lg:w-[450px] lg:h-[230px] lg:mb-12 bg-zinc-700 rounded-md text-center">
+        <h1 className=" pt-16 md:pt-2 text-9xl lg:text-9xl font-semibold text-white pt-8">{displayTime}</h1>
         <div className="flex-row mt-3">
           <button className="bg-red-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2" onClick={decrementTimerByStep}>
             <svg

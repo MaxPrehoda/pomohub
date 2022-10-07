@@ -35,7 +35,9 @@ function App() {
       <div className="flex-auto">
         <div className=" flex flex-col justify-center items-center h-full bg-zinc-900 space-y-4">
           {clock}
-          <TaskList />
+          <span className="invisible md:visible ">
+            <TaskList />
+          </span>
         </div>
       </div>
     </div>
