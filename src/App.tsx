@@ -5,6 +5,9 @@ import Clock from './components/Clock';
 import TaskList from './components/TaskList';
 
 import defaultConfig from './defaultConfigs';
+import defaultPomoHubData from './defaultPomoHubData';
+
+import { ConfigInterface, PomoHubLocalStorageInterface } from './entities';
 
 const loadOrCreateConfig = () => {
   // Looks for a file called config.json in the same directory as the executable
@@ -22,9 +25,32 @@ const loadOrCreateConfig = () => {
   return defaultConfig;
 };
 
+const loadOrCreatePomoHubData = () => {
+  const pomoHubData = localStorage.getItem('PomoHubData');
+  // if pomoHubData exists, load it. Otherwise, create it with default values.
+  // if it exists, but does not have the correct format, create it with default values.
+  if (pomoHubData) {
+    if (
+      Object.keys(pomoHubData).length === Object.keys(defaultPomoHubData).length &&
+      Object.keys(pomoHubData).every((key) => Object.keys(defaultPomoHubData).includes(key))
+    ) {
+      return JSON.parse(pomoHubData);
+    }
+  }
+  localStorage.setItem('PomoHubData', JSON.stringify(defaultPomoHubData));
+  return defaultPomoHubData;
+};
+
+const logPomoHubData = (pomoHubData: PomoHubLocalStorageInterface) => {
+  console.log('Username:', pomoHubData.username);
+  console.log('Stored Sessions:', pomoHubData.storedSessions);
+};
+
 function App() {
   const [config, setConfig] = useState(loadOrCreateConfig());
-  const clock = Clock(config);
+  const [pomoHubData, setPomoHubData] = useState(loadOrCreatePomoHubData());
+  logPomoHubData(pomoHubData);
+  const clock = Clock(config, pomoHubData);
   return (
     <div className="flex flex-col h-screen transition-opacity duration-75">
       {window.Main && (

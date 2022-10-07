@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { ConfigInterface } from '../entities';
+import { ConfigInterface, PomoHubLocalStorageInterface } from '../entities';
 
 function formatDisplayTime(time: number) {
   const minutes = Math.floor(time / 60);
@@ -9,10 +9,14 @@ function formatDisplayTime(time: number) {
   return displayTime;
 }
 
-function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDurationMinutes }: ConfigInterface) {
+function Clock(
+  { cycleDurationMinutes, stepDurationMinutes, maximumCycleDurationMinutes }: ConfigInterface,
+  { username, storedSessions }: PomoHubLocalStorageInterface) {
   const cycleDurationSeconds = cycleDurationMinutes * 60;
   const stepDurationSeconds = stepDurationMinutes * 60;
   const maximumCycleDurationSeconds = maximumCycleDurationMinutes * 60;
+
+  console.log('Clock has access to storedSessions:', storedSessions);
 
   const [time, setTime] = useState(cycleDurationSeconds);
   const [isRunning, setIsRunning] = useState(false);
