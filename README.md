@@ -2,16 +2,17 @@
 
 ## Setup instructions
 
-To run locally, use the following steps:
+To run locally, use the following steps for initial setup:
 
 1. Run `npm i`.
 2. Run `npm i vite`.
 3. Run `npm i yarn`.
 4. Run `yarn dev:vite`
 
-On Windows:
+On Windows, you may need yarn installed globally:
 
 1. `npm i -g yarn`
-2. `yarn dev:vite`
 
-Navigate to `http://localhost:3000/`.
+To run in the browser, run `yarn dev:vite` and navigate to `http://localhost:3000/`.
+
+To run using Electron, run `npm run dev:electron`.

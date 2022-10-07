@@ -1,10 +1,46 @@
 import React, { useEffect, useState } from 'react';
 
+function formatDisplayTime(time: number) {
+  const minutes = Math.floor(time / 60);
+  const seconds = time % 60;
+  const displayTime = `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+  return displayTime;
+}
+
 function Clock() {
+  const defaultStartingMinutes = 45;
+  const [time, setTime] = useState(defaultStartingMinutes * 60);
+  const [isRunning, setIsRunning] = useState(false);
+
+  const startOrPauseTimer = () => {
+    setIsRunning(!isRunning);
+  };
+
+  // add a useEffect to update the current time
+  // if the timer is running and the time is greater than 0
+  // decrement the time by 1 every second
+  // if the time is 0, stop the timer
+  // if the timer is not running, stop the timer
+
+  useEffect(() => {
+    if (!(isRunning && time > 0)) {
+      if (time === 0) {
+        setIsRunning(false);
+      }
+    } else {
+      const interval = setInterval(() => {
+        setTime(time - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [isRunning, time]);
+
+  const displayTime = formatDisplayTime(time);
+
   return (
     <div className="h-[230px]">
       <div className="h-[200px] w-[300px] md:w-[375px] lg:w-[450px] lg:h-[230px] lg:mb-12 bg-zinc-700 rounded-md text-center">
-        <h1 className="text-8xl lg:text-9xl font-semibold text-white pt-8">45:00</h1>
+        <h1 className="text-8xl lg:text-9xl font-semibold text-white pt-8">{displayTime}</h1>
         <div className="flex-row mt-3">
           <button className="bg-red-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2">
             <svg
@@ -18,7 +54,11 @@ function Clock() {
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </button>
-          <button className="bg-zinc-500 rounded-md pl-2 pt-2 pb-2 mr-2 pr-2">
+          <button
+            id="start_pause_button"
+            onClick={startOrPauseTimer}
+            className="bg-zinc-500 rounded-md pl-2 pt-2 pb-2 mr-2 pr-2"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
