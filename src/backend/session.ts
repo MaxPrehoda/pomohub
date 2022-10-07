@@ -25,7 +25,7 @@ export default class PomoSession {
     this.cycleArray = [];
   }
 
-  start() {
+  startSession() {
     this.isRunning = true;
     this.startingDate = new Date();
   }
@@ -41,7 +41,7 @@ export default class PomoSession {
     this.cycleArray.push(currCycle);
   }
 
-  stop() {
+  stopSession() {
     this.isRunning = false;
   }
 }

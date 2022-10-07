@@ -8,9 +8,9 @@ describe('Session', () => {
 
   it('should be able to be started and stopped', () => {
     const session = new PomoSession(new Date());
-    session.start();
+    session.startSession();
     expect(session.isRunning).toBe(true);
-    session.stop();
+    session.stopSession();
     expect(session.isRunning).toBe(false);
   });
 });
