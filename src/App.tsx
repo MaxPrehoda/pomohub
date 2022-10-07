@@ -5,7 +5,6 @@ import Clock from '../src/components/Clock';
 import TaskList from './components/TaskList';
 
 function App() {
-
   return (
     <div className="flex flex-col h-screen transition-opacity duration-75">
       {window.Main && (
@@ -17,8 +16,9 @@ function App() {
         <div className=" flex flex-col justify-center items-center h-full bg-zinc-900 space-y-4">
           <Clock />
           <TaskList />
-        </div></div>
-    </div >
+        </div>
+      </div>
+    </div>
   );
 }
 
