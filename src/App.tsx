@@ -9,10 +9,12 @@ import defaultPomoHubData from './defaultPomoHubData';
 import { PomoHubLocalStorageInterface } from './entities';
 
 const loadOrCreateConfig = () => {
-
   const config = localStorage.getItem('config');
   if (config) {
-    if (Object.keys(config).length === Object.keys(defaultConfig).length) {
+    if (
+      Object.keys(config).length === Object.keys(defaultConfig).length &&
+      Object.keys(localStorage).every((key) => Object.keys(defaultConfig).includes(key))
+    ) {
       return JSON.parse(config);
     }
   }
