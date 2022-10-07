@@ -6,10 +6,11 @@ interface Tasks {
 
 interface Props {
   task: Tasks;
+  deleteTask(taskNameToDelete: string): void;
   completeTask(taskNameToDelete: string): void;
 }
 
-function Task({ task, completeTask }: Props) {
+function Task({ task, deleteTask, completeTask }: Props) {
   return (
     <div className="flex-row task bg-zinc-700 p-3 rounded-md text-left hover:opacity-60">
       <input className="mr-2" type="checkbox" onClick={() => {
@@ -19,7 +20,7 @@ function Task({ task, completeTask }: Props) {
       <button
         className="float-right"
         onClick={() => {
-          completeTask(task.taskName);
+          deleteTask(task.taskName);
         }}
       >
         <svg

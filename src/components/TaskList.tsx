@@ -21,7 +21,17 @@ function TaskList() {
     setTask(''); // clear inputs
   };
 
-  const completeTask = (taskNameToDelete: string): void => {
+  const completeTask = (taskNameToComplete: string): void => {
+    //send task to storage
+    console.log("Task completed: " + taskNameToComplete);
+    setTodoList(
+      todoList.filter((task) => {
+        return task.taskName != taskNameToComplete;
+      })
+    );
+  };
+
+  const deleteTask = (taskNameToDelete: string): void => {
     setTodoList(
       todoList.filter((task) => {
         return task.taskName != taskNameToDelete;
@@ -49,7 +59,7 @@ function TaskList() {
         <h1 className="text-2xl inline text-white pl-1">Tasks</h1>
       </span>
       {todoList.map((task: Tasks, key: number) => {
-        return <Task key={key} task={task} completeTask={completeTask} />;
+        return <Task key={key} task={task} completeTask={completeTask} deleteTask={deleteTask} />;
       })}
       <div className="bg-transparent p-2 rounded-md text-center hover:opacity-60 border-2 border-zinc-700">
         <input
