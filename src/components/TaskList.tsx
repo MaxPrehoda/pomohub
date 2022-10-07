@@ -6,6 +6,8 @@ function TaskList() {
   interface Tasks {
     taskName: string;
     taskId: number;
+    taskState: string;
+    dateChanged: string;
   }
 
   const [task, setTask] = useState<string>('');
@@ -19,7 +21,13 @@ function TaskList() {
   };
 
   const addTask = (): void => {
-    const newTask = { taskName: task, taskId: Math.floor(Math.random() * 199000) };
+    const currDate = new Date();
+    const newTask = {
+      taskName: task,
+      taskId: Math.floor(Math.random() * 199000),
+      taskState: 'Incomplete',
+      dateChanged: currDate
+    };
     setTodoList([...todoList, newTask]);
     setTask(''); // clear inputs
   };
@@ -33,6 +41,12 @@ function TaskList() {
   const completeTask = (taskIdToComplete: number): void => {
     // send task to storage
     console.log(`Task completed: ${taskIdToComplete}`);
+    const taskIndex = todoList.findIndex((currTasks) => {
+      return currTasks.taskId === taskIdToComplete;
+    });
+    todoList[taskIndex].dateChanged = Date();
+    todoList[taskIndex].taskState = 'Complete';
+    // console.log(todoList[taskIndex]);
     setTodoList(
       todoList.filter((task) => {
         return task.taskId !== taskIdToComplete;
@@ -96,3 +110,7 @@ function TaskList() {
 }
 
 export default TaskList;
+function taskState(arg0: number, taskState: any, arg2: string) {
+  throw new Error('Function not implemented.');
+}
+
