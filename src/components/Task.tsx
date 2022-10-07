@@ -2,25 +2,29 @@ import React from 'react';
 
 interface Tasks {
   taskName: string;
+  taskId: number;
 }
 
 interface Props {
   task: Tasks;
-  deleteTask(taskNameToDelete: string): void;
-  completeTask(taskNameToDelete: string): void;
+  deleteTask(taskIdToDelete: string): void;
+  completeTask(taskIdToDelete: string): void;
 }
 
 function Task({ task, deleteTask, completeTask }: Props) {
   return (
-    <div className="flex-row task bg-zinc-700 p-3 rounded-md text-left hover:opacity-60">
-      <input className="mr-2" type="checkbox" onClick={() => {
-          completeTask(task.taskName);
-        }} />
+    <div className="relative flex-row task bg-zinc-700 p-3 rounded-md text-left hover:opacity-60">
+      <button
+        className="mr-2 w-4 h-4 rounded-sm bg-zinc-50"
+        onClick={() => {
+          completeTask(task.taskId);
+        }}
+      />
       {task.taskName}
       <button
         className="float-right"
         onClick={() => {
-          deleteTask(task.taskName);
+          deleteTask(task.taskId);
         }}
       >
         <svg

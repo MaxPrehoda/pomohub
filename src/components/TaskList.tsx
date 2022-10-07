@@ -4,6 +4,7 @@ import Task from './Task';
 function TaskList() {
   interface Tasks {
     taskName: string;
+    taskId: number;
   }
 
   const [task, setTask] = useState<string>('');
@@ -16,25 +17,26 @@ function TaskList() {
   };
 
   const addTask = (): void => {
-    const newTask = { taskName: task };
+    const newTask = { taskName: task, taskId: Math.floor(Math.random() * 199000)};
     setTodoList([...todoList, newTask]);
     setTask(''); // clear inputs
+    console.log(newTask)
   };
 
-  const completeTask = (taskNameToComplete: string): void => {
-    //send task to storage
-    console.log("Task completed: " + taskNameToComplete);
+  const completeTask = (taskIdToComplete: number): void => {
+    // send task to storage
+    console.log(`Task completed: ${taskIdToComplete}`);
     setTodoList(
       todoList.filter((task) => {
-        return task.taskName != taskNameToComplete;
+        return task.taskId !== taskIdToComplete;
       })
     );
   };
 
-  const deleteTask = (taskNameToDelete: string): void => {
+  const deleteTask = (taskIdToDelete: number): void => {
     setTodoList(
       todoList.filter((task) => {
-        return task.taskName != taskNameToDelete;
+        return task.taskId !== taskIdToDelete;
       })
     );
   };
