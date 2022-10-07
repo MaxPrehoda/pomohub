@@ -1,8 +1,17 @@
 import React, { useEffect, useState } from 'react';
 
+function formatDisplayTime(time: number) {
+  const minutes = Math.floor(time / 60);
+  const seconds = time % 60;
+  const displayTime = `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+  return displayTime;
+}
+
 function Clock() {
   const defaultStartingMinutes = 45;
   const [time, setTime] = useState(defaultStartingMinutes * 60);
+
+
   useEffect(() => {
     if (time > 0) {
       const interval = setInterval(() => {
@@ -12,9 +21,7 @@ function Clock() {
     }
   }, [time]);
 
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
-  const displayTime = `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+  const displayTime = formatDisplayTime(time);
 
   return (
     <div className="h-[230px]">
@@ -68,3 +75,5 @@ function Clock() {
 }
 
 export default Clock;
+
+
