@@ -16,3 +16,9 @@ On Windows, you may need yarn installed globally:
 To run in the browser, run `yarn dev:vite` and navigate to `http://localhost:3000/`.
 
 To run using Electron, run `npm run dev:electron`.
+
+
+## Testing
+
+To run the local test suite, run `npm run test`.
+To rerun the test suite whenever local file changes are saved, run `npm run watch`
