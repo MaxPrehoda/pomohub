@@ -7,9 +7,8 @@ function formatDisplayTime(time: number) {
   return displayTime;
 }
 
-function Clock() {
-  const defaultStartingMinutes = 45;
-  const [time, setTime] = useState(defaultStartingMinutes * 60);
+function Clock(cycleDurationMin: number) {
+  const [time, setTime] = useState(cycleDurationMin * 60);
   const [isRunning, setIsRunning] = useState(false);
 
   const startOrPauseTimer = () => {
