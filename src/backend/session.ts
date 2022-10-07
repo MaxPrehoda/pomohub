@@ -1,12 +1,12 @@
 export default class PomoSession {
-  start: Date;
+  startingDate: Date;
 
   numberOfCycles: number;
 
   numberOfCyclesCompleted: number;
 
-  constructor(start: Date, numberOfCycles: number) {
-    this.start = start;
+  constructor(startingDate: Date, numberOfCycles: number) {
+    this.startingDate = startingDate;
     this.numberOfCycles = numberOfCycles;
     this.numberOfCyclesCompleted = 0;
   }
