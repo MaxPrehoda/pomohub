@@ -1,10 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
 function Clock() {
+  const defaultStartingMinutes = 45;
+  const [time, setTime] = useState(defaultStartingMinutes * 60);
+  useEffect(() => {
+    if (time > 0) {
+      const interval = setInterval(() => {
+        setTime(time - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [time]);
+
+  const minutes = Math.floor(time / 60);
+  const seconds = time % 60;
+  const displayTime = `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+
   return (
     <div className="h-[230px]">
       <div className="h-[200px] w-[300px] md:w-[375px] lg:w-[450px] lg:h-[230px] lg:mb-12 bg-zinc-700 rounded-md text-center">
-        <h1 className="text-8xl lg:text-9xl font-semibold text-white pt-8">45:00</h1>
+        <h1 className="text-8xl lg:text-9xl font-semibold text-white pt-8">{displayTime}</h1>
         <div className="flex-row mt-3">
           <button className="bg-red-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2">
             <svg
