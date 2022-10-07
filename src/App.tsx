@@ -34,6 +34,20 @@ const loadOrCreatePomoHubData = () => {
   return defaultPomoHubData;
 };
 
+export const readPomoHubData = () => {
+  const pomoHubData = localStorage.getItem('PomoHubData');
+  if (pomoHubData) {
+    return JSON.parse(pomoHubData);
+  }
+  throw new Error('PomoHubData not found in localStorage');
+};
+
+export const writeUsernameToPomoHubData = (username: string) => {
+  const pomoHubData = readPomoHubData();
+  pomoHubData.username = username;
+  localStorage.setItem('PomoHubData', JSON.stringify(pomoHubData));
+};
+
 const logPomoHubData = (pomoHubData: PomoHubLocalStorageInterface) => {
   console.log('Username:', pomoHubData.username);
   console.log('Stored Sessions:', pomoHubData.storedSessions);
