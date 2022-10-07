@@ -10,7 +10,7 @@ const width = 1100;
 
 function createWindow() {
   const window = new BrowserWindow({
-    backgroundColor: '#000',
+    backgroundColor: '#18181b',
     width,
     height,
     frame: false,
