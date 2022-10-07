@@ -2,6 +2,7 @@ export interface ConfigInterface {
   cycleDurationMinutes: number;
   stepDurationMinutes: number;
   maximumCycleDurationMinutes: number;
+  isExpectedVsActualEnabled: boolean;
 }
 
 export interface SessionInterface {

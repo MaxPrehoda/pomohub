@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
-import Settings from './Settings';
 import Icon from '../assets/icons/clock.svg';
 
 function AppBar() {
-  const [modalOpen, setModalOpen] = useState(false);
   const [isMaximize, setMaximize] = useState(false);
 
   const handleToggle = () => {
@@ -106,7 +104,6 @@ function AppBar() {
           </div>
         </div>
       </div>
-      <div>{modalOpen && <Modal setOpenModal={setModalOpen}/>}</div>
     </div>
   );
 }
