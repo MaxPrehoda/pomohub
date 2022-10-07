@@ -6,7 +6,7 @@ import TaskList from './components/TaskList';
 import defaultConfig from './defaultConfigs';
 import defaultPomoHubData from './defaultPomoHubData';
 
-import { PomoHubLocalStorageInterface } from './entities';
+import { PomoHubLocalStorageInterface, ConfigInterface } from './entities';
 
 const loadOrCreateConfig = () => {
   const config = localStorage.getItem('config');
@@ -42,6 +42,18 @@ export const readPomoHubData = () => {
     return JSON.parse(pomoHubData);
   }
   throw new Error('PomoHubData not found in localStorage');
+};
+
+export const writeToLocalConfig = (config: ConfigInterface) => {
+  localStorage.setItem('config', JSON.stringify(config));
+};
+
+export const readLocalConfig = () => {
+  const config = localStorage.getItem('config');
+  if (config) {
+    return JSON.parse(config);
+  }
+  throw new Error('Config not found in localStorage');
 };
 
 export const writeUsernameToPomoHubData = (username: string) => {
