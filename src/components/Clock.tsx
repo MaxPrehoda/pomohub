@@ -7,12 +7,18 @@ function formatDisplayTime(time: number) {
   return displayTime;
 }
 
-function Clock(cycleDurationMin: number) {
+function Clock(cycleDurationMin: number, stepDurationMin: number) {
   const [time, setTime] = useState(cycleDurationMin * 60);
   const [isRunning, setIsRunning] = useState(false);
 
   const startOrPauseTimer = () => {
     setIsRunning(!isRunning);
+  };
+
+  const decrementTimerByStep = () => {
+    console.log('decrementing timer');
+    console.log('stepDurationMin', stepDurationMin);
+    setTime((prevTime) => prevTime - stepDurationMin * 60);
   };
 
   useEffect(() => {
@@ -34,8 +40,12 @@ function Clock(cycleDurationMin: number) {
     <div className="h-[230px]">
       <div className="h-[200px] w-[300px] md:w-[375px] lg:w-[450px] lg:h-[230px] lg:mb-12 bg-zinc-700 rounded-md text-center">
         <h1 className="text-8xl lg:text-9xl font-semibold text-white pt-8">{displayTime}</h1>
-        <div className="flex-row mt-3">
-          <button className="bg-red-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2">
+        <div className="flex-row mt-3"
+
+        >
+          <button className="bg-red-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2"
+            onClick={decrementTimerByStep}
+            >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
