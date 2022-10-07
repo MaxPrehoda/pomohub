@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface Tasks {
+export interface Tasks {
   taskName: string;
   taskId: number;
   taskState: string;

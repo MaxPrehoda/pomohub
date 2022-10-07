@@ -1,15 +1,9 @@
 import { KeyboardEvent } from 'electron';
 import React, { useEffect, ChangeEvent, useState } from 'react';
 import Task from './Task';
+import { Tasks } from '../entities';
 
 function TaskList() {
-  interface Tasks {
-    taskName: string;
-    taskId: number;
-    taskState: string;
-    dateChanged: string;
-  }
-
   const [task, setTask] = useState<string>('');
   const [todoList, setTodoList] = useState<Tasks[]>([]);
 
@@ -25,7 +19,7 @@ function TaskList() {
     const newTask = {
       taskName: task,
       taskId: Math.floor(Math.random() * 199000),
-      taskState: 'Incomplete',
+      taskState: 'incomplete',
       dateChanged: currDate
     };
     setTodoList([...todoList, newTask]);
@@ -45,7 +39,7 @@ function TaskList() {
       return currTasks.taskId === taskIdToComplete;
     });
     todoList[taskIndex].dateChanged = Date();
-    todoList[taskIndex].taskState = 'Complete';
+    todoList[taskIndex].taskState = 'complete';
     // console.log(todoList[taskIndex]);
     setTodoList(
       todoList.filter((task) => {
