@@ -2,6 +2,7 @@ import { Input } from 'postcss';
 import React, { useEffect, useState } from 'react';
 import AppBar from '../src/components/AppBar';
 import Clock from '../src/components/Clock';
+import TaskList from './components/TaskList';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
       <div className="flex-auto">
         <div className=" flex flex-col justify-center items-center h-full bg-zinc-900 space-y-4">
           <Clock />
+          <TaskList />
         </div></div>
     </div >
   );
