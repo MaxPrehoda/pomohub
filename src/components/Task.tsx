@@ -12,7 +12,9 @@ interface Props {
 function Task({ task, completeTask }: Props) {
   return (
     <div className="flex-row task bg-zinc-700 p-3 rounded-md text-left hover:opacity-60">
-      <input className="mr-2" type="checkbox" />
+      <input className="mr-2" type="checkbox" onClick={() => {
+          completeTask(task.taskName);
+        }} />
       {task.taskName}
       <button
         className="float-right"
