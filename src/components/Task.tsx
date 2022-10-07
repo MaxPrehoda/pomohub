@@ -3,6 +3,8 @@ import React from 'react';
 interface Tasks {
   taskName: string;
   taskId: number;
+  status: string;
+  dateChanged: Date;
 }
 
 interface Props {
