@@ -1,3 +1,9 @@
+import Task from '../components/Task';
+
+interface cycleData {
+  tasks: Array<typeof Task>;
+}
+
 export default class PomoSession {
   startingDate: Date;
 
@@ -5,7 +11,7 @@ export default class PomoSession {
 
   isRunning: boolean;
 
-  cycleArray: Array<object>;
+  cycleArray: Array<cycleData>;
 
   constructor(startingDate: Date) {
     this.startingDate = startingDate;
