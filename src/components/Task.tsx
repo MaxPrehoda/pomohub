@@ -3,6 +3,8 @@ import React from 'react';
 interface Tasks {
   taskName: string;
   taskId: number;
+  status: string;
+  dateChanged: Date;
 }
 
 interface Props {
@@ -19,7 +21,12 @@ function Task({ task, deleteTask, completeTask }: Props) {
         onClick={() => {
           completeTask(task.taskId);
         }}
-      /><input className='bg-transparent outline-none' name="task" placeholder={task.taskName} ></input>
+      />
+      <input
+        className="bg-transparent outline-none placeholder-white"
+        name="task"
+        placeholder={task.taskName}
+      />
       <button
         className="float-right"
         onClick={() => {
