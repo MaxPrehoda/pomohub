@@ -16,14 +16,24 @@ function Clock() {
     setIsRunning(!isRunning);
   };
 
+  // add a useEffect to update the current time
+  // if the timer is running and the time is greater than 0
+  // decrement the time by 1 every second
+  // if the time is 0, stop the timer
+  // if the timer is not running, stop the timer
+
   useEffect(() => {
-    if (isRunning && time > 0) {
+    if (!(isRunning && time > 0)) {
+      if (time === 0) {
+        setIsRunning(false);
+      }
+    } else {
       const interval = setInterval(() => {
         setTime(time - 1);
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [time]);
+  }, [isRunning, time]);
 
   const displayTime = formatDisplayTime(time);
 
