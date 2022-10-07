@@ -10,4 +10,12 @@ describe('Session', () => {
     const session = new PomoSession(new Date(), 4);
     expect(session.numberOfCycles).toBe(4);
   });
+
+  it('should be able to be started and stopped', () => {
+    const session = new PomoSession(new Date(), 4);
+    session.start();
+    expect(session.isRunning).toBe(true);
+    session.stop();
+    expect(session.isRunning).toBe(false);
+  });
 });
