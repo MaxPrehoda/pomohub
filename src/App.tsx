@@ -8,7 +8,7 @@ import defaultPomoHubData from './defaultPomoHubData';
 
 import { PomoHubLocalStorageInterface, ConfigInterface } from './entities';
 
-const loadOrCreateConfig = () => {
+const loadOrCreateConfig = (): ConfigInterface => {
   const config = localStorage.getItem('config');
   if (!config) {
     localStorage.setItem('config', JSON.stringify(defaultConfig));
@@ -37,7 +37,7 @@ const loadOrCreateConfig = () => {
 
   localStorage.setItem('config', JSON.stringify(newConfig));
 
-  return config;
+  return newConfig;
 };
 
 const loadOrCreatePomoHubData = () => {
@@ -86,7 +86,7 @@ const logPomoHubData = (pomoHubData: PomoHubLocalStorageInterface) => {
 };
 
 const logLocalConfigs = (config: ConfigInterface) => {
-  console.log('Local Configs:\n' + JSON.stringify(config, null, 2));
+  console.log(`Local Configs:\n${JSON.stringify(config, null, 2)}`);
 };
 
 function App() {
