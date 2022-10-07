@@ -1,3 +1,4 @@
+import { KeyboardEvent } from 'electron';
 import React, { useEffect, ChangeEvent, useState } from 'react';
 import Task from './Task';
 
@@ -12,15 +13,21 @@ function TaskList() {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     if (event.target.name === 'task') {
+      console.log(event);
       setTask(event.target.value);
     }
   };
 
   const addTask = (): void => {
-    const newTask = { taskName: task, taskId: Math.floor(Math.random() * 199000)};
+    const newTask = { taskName: task, taskId: Math.floor(Math.random() * 199000) };
     setTodoList([...todoList, newTask]);
     setTask(''); // clear inputs
-    console.log(newTask)
+  };
+
+  const handleEnter = (task, event: KeyboardEvent): void => {
+    if ((event.target.name === 'task') & (event.key === 'Enter')) {
+      addTask(task);
+    }
   };
 
   const completeTask = (taskIdToComplete: number): void => {
@@ -70,6 +77,7 @@ function TaskList() {
           placeholder="Task Name"
           value={task}
           onChange={handleChange}
+          onKeyDown={(event) => handleEnter(task, event)}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"
