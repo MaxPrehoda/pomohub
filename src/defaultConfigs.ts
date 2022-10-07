@@ -1,8 +1,9 @@
-import { Config } from './entities';
+import { ConfigInterface } from './entities';
 
-const defaultConfig: Config = {
-  cycle_duration_minutes: 30,
-  step_duration_minutes: 5
+const defaultConfig: ConfigInterface = {
+  cycleDurationMinutes: 30,
+  stepDurationMinutes: 5,
+  maximumCycleDurationMinutes: 180
 };
 
 export default defaultConfig;

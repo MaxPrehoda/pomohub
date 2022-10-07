@@ -1,4 +1,5 @@
-export type Config = {
-  cycle_duration_minutes: number;
-  step_duration_minutes: number;
-};
+export interface ConfigInterface {
+  cycleDurationMinutes: number;
+  stepDurationMinutes: number;
+  maximumCycleDurationMinutes: number;
+}

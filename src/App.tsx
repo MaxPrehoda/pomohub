@@ -24,8 +24,7 @@ const loadOrCreateConfig = () => {
 
 function App() {
   const [config, setConfig] = useState(loadOrCreateConfig());
-  console.log('config', config);
-  const clock = Clock(config.cycle_duration_minutes, config.step_duration_minutes);
+  const clock = Clock(config);
   return (
     <div className="flex flex-col h-screen transition-opacity duration-75">
       {window.Main && (

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { ConfigInterface } from '../entities';
+
 function formatDisplayTime(time: number) {
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
@@ -7,8 +9,12 @@ function formatDisplayTime(time: number) {
   return displayTime;
 }
 
-function Clock(cycleDurationMin: number, stepDurationMin: number) {
-  const [time, setTime] = useState(cycleDurationMin * 60);
+function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDurationMinutes }: ConfigInterface) {
+  const cycleDurationSeconds = cycleDurationMinutes * 60;
+  const stepDurationSeconds = stepDurationMinutes * 60;
+  const maximumCycleDurationSeconds = maximumCycleDurationMinutes * 60;
+
+  const [time, setTime] = useState(cycleDurationSeconds);
   const [isRunning, setIsRunning] = useState(false);
 
   const startOrPauseTimer = () => {
@@ -16,11 +22,19 @@ function Clock(cycleDurationMin: number, stepDurationMin: number) {
   };
 
   const decrementTimerByStep = () => {
-    setTime((prevTime) => prevTime - stepDurationMin * 60);
+    if (time > stepDurationSeconds) {
+      setTime(time - stepDurationSeconds);
+    } else {
+      setTime(0);
+    }
   };
 
   const incrementTimerByStep = () => {
-    setTime((prevTime) => prevTime + stepDurationMin * 60);
+    if (time < maximumCycleDurationSeconds - stepDurationSeconds) {
+      setTime(time + stepDurationSeconds);
+    } else {
+      setTime(maximumCycleDurationSeconds);
+    }
   };
 
   useEffect(() => {
@@ -75,8 +89,7 @@ function Clock(cycleDurationMin: number, stepDurationMin: number) {
               />
             </svg>
           </button>
-          <button className=" bg-green-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2"
-            onClick={incrementTimerByStep}>
+          <button className=" bg-green-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2" onClick={incrementTimerByStep}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
