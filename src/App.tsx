@@ -1,5 +1,4 @@
-import { Input } from 'postcss';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import AppBar from './components/AppBar';
 import Clock from './components/Clock';
 import TaskList from './components/TaskList';
@@ -7,13 +6,9 @@ import TaskList from './components/TaskList';
 import defaultConfig from './defaultConfigs';
 import defaultPomoHubData from './defaultPomoHubData';
 
-import { ConfigInterface, PomoHubLocalStorageInterface } from './entities';
+import { PomoHubLocalStorageInterface } from './entities';
 
 const loadOrCreateConfig = () => {
-  // Looks for a file called config.json in the same directory as the executable
-  // if it exists, checks it to ensure that is has the correct format based on the Config interface
-  // if it doesn't exist, or if it doesn't have the correct format, it creates a new config file with the default values
-  // otherwise, it returns the config file for use by the app
 
   const config = localStorage.getItem('config');
   if (config) {
@@ -27,8 +22,6 @@ const loadOrCreateConfig = () => {
 
 const loadOrCreatePomoHubData = () => {
   const pomoHubData = localStorage.getItem('PomoHubData');
-  // if pomoHubData exists, load it. Otherwise, create it with default values.
-  // if it exists, but does not have the correct format, create it with default values.
   if (pomoHubData) {
     if (
       Object.keys(pomoHubData).length === Object.keys(defaultPomoHubData).length &&
