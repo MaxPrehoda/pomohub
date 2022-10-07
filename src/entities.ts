@@ -17,5 +17,5 @@ export interface Tasks {
   taskName: string;
   taskId: number;
   taskState: string;
-  dateChanged: string;
+  dateChanged: Date;
 }

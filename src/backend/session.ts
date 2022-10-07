@@ -1,6 +1,4 @@
-import Task from '../components/Task';
 import { Tasks } from '../entities';
-import TaskList from '../components/TaskList';
 
 interface cycleData {
   tasks: Array<Tasks>;
@@ -48,7 +46,7 @@ export default class PomoSession {
     const currDate = new Date();
     const cycleIndex = this.cycleArray.length - 1;
     // initialize a new task copy to modify the date stamp of
-    const modifyTask = currTask;
+    const modifyTask: Tasks = currTask;
     modifyTask.dateChanged = currDate;
     // filter for the specific task if existing, otherwise will get -1 index error
     const taskIdentifier = (task: { taskId: number }) => task.taskId === currTask.taskId;
