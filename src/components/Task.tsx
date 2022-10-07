@@ -19,8 +19,7 @@ function Task({ task, deleteTask, completeTask }: Props) {
         onClick={() => {
           completeTask(task.taskId);
         }}
-      />
-      {task.taskName}
+      /><input className='bg-transparent outline-none' name="task" placeholder={task.taskName} ></input>
       <button
         className="float-right"
         onClick={() => {
