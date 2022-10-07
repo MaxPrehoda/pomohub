@@ -10,10 +10,14 @@ function formatDisplayTime(time: number) {
 function Clock() {
   const defaultStartingMinutes = 45;
   const [time, setTime] = useState(defaultStartingMinutes * 60);
+  const [isRunning, setIsRunning] = useState(false);
 
+  const startOrPauseTimer = () => {
+    setIsRunning(!isRunning);
+  };
 
   useEffect(() => {
-    if (time > 0) {
+    if (isRunning && time > 0) {
       const interval = setInterval(() => {
         setTime(time - 1);
       }, 1000);
@@ -40,7 +44,11 @@ function Clock() {
               <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </button>
-          <button className="bg-zinc-500 rounded-md pl-2 pt-2 pb-2 mr-2 pr-2">
+          <button
+            id="start_pause_button"
+            onClick={startOrPauseTimer}
+            className="bg-zinc-500 rounded-md pl-2 pt-2 pb-2 mr-2 pr-2"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -75,5 +83,3 @@ function Clock() {
 }
 
 export default Clock;
-
-
