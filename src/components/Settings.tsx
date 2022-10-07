@@ -4,7 +4,7 @@ import { ConfigInterface } from '../entities';
 
 import { writeUsernameToPomoHubData, readPomoHubData, writeToLocalConfig, readLocalConfig } from '../App';
 
-function Modal({ setOpenModal }) {
+function settingsDropdown() {
   const [username, setUsername] = useState(readPomoHubData().username);
   const handleUsernameChange = (event: any) => {
     console.log(`Username changing from '${username}' to '${event.target.value}`);
@@ -99,37 +99,15 @@ function Modal({ setOpenModal }) {
   );
 
   return (
-    <div className="modalBackground">
-      <div className="modalContainer">
-        <div className="titleCloseBtn">
-          <button
-            onClick={() => {
-              setOpenModal(false);
-            }}
-          >
-            X
-          </button>
-        </div>
-        <div className="title">
-          <h1>title</h1>
-        </div>
-        <div className="body">
-          <p>The next page!</p>
-        </div>
-        <div className="footer">
-          <button
-            onClick={() => {
-              setOpenModal(false);
-            }}
-            id="cancelBtn"
-          >
-            Cancel
-          </button>
-          <button>Continue</button>
-        </div>
-      </div>
-    </div>
+    <label>
+      {label}
+      <select value={value} onChange={onChange}>
+        {options.map((option) => (
+          <option value={option.value}>{option.label}</option>
+        ))}
+      </select>
+    </label>
   );
 }
 
-export default Modal;
+export default settingsDropdown;
