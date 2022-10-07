@@ -1,11 +1,5 @@
 import React from 'react';
-
-export interface Tasks {
-  taskName: string;
-  taskId: number;
-  taskState: string;
-  dateChanged: Date;
-}
+import { Tasks } from '../entities';
 
 interface Props {
   task: Tasks;
