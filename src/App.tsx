@@ -10,16 +10,34 @@ import { PomoHubLocalStorageInterface, ConfigInterface } from './entities';
 
 const loadOrCreateConfig = () => {
   const config = localStorage.getItem('config');
-  if (config) {
-    if (
-      Object.keys(config).length === Object.keys(defaultConfig).length &&
-      Object.keys(localStorage).every((key) => Object.keys(defaultConfig).includes(key))
-    ) {
-      return JSON.parse(config);
-    }
+  if (!config) {
+    localStorage.setItem('config', JSON.stringify(defaultConfig));
+    console.warn('Config not found in localStorage, using default config');
   }
-  localStorage.setItem('config', JSON.stringify(defaultConfig));
-  return defaultConfig;
+
+  if (!config) {
+    throw new Error('Config not found in localStorage');
+  }
+
+  const configFromLocalStorage = JSON.parse(config) as ConfigInterface;
+  const newConfig: ConfigInterface = {
+    cycleDurationMinutes: configFromLocalStorage.cycleDurationMinutes
+      ? configFromLocalStorage.cycleDurationMinutes
+      : defaultConfig.cycleDurationMinutes,
+    stepDurationMinutes: configFromLocalStorage.stepDurationMinutes
+      ? configFromLocalStorage.stepDurationMinutes
+      : defaultConfig.stepDurationMinutes,
+    maximumCycleDurationMinutes: configFromLocalStorage.maximumCycleDurationMinutes
+      ? configFromLocalStorage.maximumCycleDurationMinutes
+      : defaultConfig.maximumCycleDurationMinutes,
+    isExpectedVsActualEnabled: configFromLocalStorage.isExpectedVsActualEnabled
+      ? configFromLocalStorage.isExpectedVsActualEnabled
+      : defaultConfig.isExpectedVsActualEnabled
+  };
+
+  localStorage.setItem('config', JSON.stringify(newConfig));
+
+  return config;
 };
 
 const loadOrCreatePomoHubData = () => {
@@ -67,10 +85,15 @@ const logPomoHubData = (pomoHubData: PomoHubLocalStorageInterface) => {
   console.log('Stored Sessions:', pomoHubData.storedSessions);
 };
 
+const logLocalConfigs = (config: ConfigInterface) => {
+  console.log('Local Configs:\n' + JSON.stringify(config, null, 2));
+};
+
 function App() {
   const [config, setConfig] = useState(loadOrCreateConfig());
   const [pomoHubData, setPomoHubData] = useState(loadOrCreatePomoHubData());
   logPomoHubData(pomoHubData);
+  logLocalConfigs(readLocalConfig());
   const clock = Clock(config, pomoHubData);
   return (
     <div className="flex flex-col h-screen transition-opacity duration-75">

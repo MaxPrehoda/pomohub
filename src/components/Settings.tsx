@@ -17,6 +17,9 @@ function Modal({ setOpenModal }) {
   const [maximumCycleDurationMinutes, setMaximumCycleDurationMinutes] = useState(
     readLocalConfig().maximumCycleDurationMinutes
   );
+  const [isExpectedVsActualEnabled, setIsExpectedVsActualEnabled] = useState(
+    readLocalConfig().isExpectedVsActualEnabled
+  );
 
   const handleLocalConfigChange = (event: any) => {
     console.log(
@@ -50,7 +53,8 @@ function Modal({ setOpenModal }) {
     const newConfig: ConfigInterface = {
       cycleDurationMinutes,
       stepDurationMinutes,
-      maximumCycleDurationMinutes
+      maximumCycleDurationMinutes,
+      isExpectedVsActualEnabled
     };
 
     writeToLocalConfig(newConfig);
