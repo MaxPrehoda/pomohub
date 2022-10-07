@@ -2,6 +2,9 @@ import Task from '../components/Task';
 
 interface cycleData {
   tasks: Array<typeof Task>;
+  cycleStart: Date | null;
+  cycleEnd: Date | null;
+  cycleSecDur: number | null;
 }
 
 export default class PomoSession {
