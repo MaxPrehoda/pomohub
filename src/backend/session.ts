@@ -25,6 +25,8 @@ export default class PomoSession {
 
   start() {
     this.isRunning = true;
+    this.startingDate = new Date();
+    this.cycleArray.push();
   }
 
   stop() {
