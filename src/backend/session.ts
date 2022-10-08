@@ -1,3 +1,4 @@
+import { SourceMap } from 'module';
 import { Tasks } from '../entities';
 
 interface cycleData {
@@ -65,6 +66,16 @@ export default class PomoSession {
 
   stopSession() {
     this.isRunning = false;
+  }
+
+  endSession(nextCycle: cycleData) {
+    this.numberOfCyclesCompleted += 1;
+    this.cycleArray[-1].cycleEnd = new Date();
+    const remainingTasks = this.cycleArray[-1].tasks.filter((task) => task.taskState === 'incomplete');
+    const missingTasks = remainingTasks.filter((tasks) => !nextCycle.tasks.includes(tasks));
+    const revisedCycle = nextCycle;
+    revisedCycle.tasks = [...revisedCycle.tasks, ...missingTasks];
+    return revisedCycle;
   }
 
   getSessionSummary() {
