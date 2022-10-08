@@ -23,16 +23,18 @@ function Clock(
 
   const [time, setTime] = useState(cycleDurationSeconds);
   const [isRunning, setIsRunning] = useState(false);
+  // const [isBreak, setBreak] = useState(false);
+  // const [isStarted, setStart] = useState(false);
 
   const {
     pomoSessionData,
-    startSession,
-    cycleStart,
-    cycleModify,
-    endSession,
-    stopSession,
-    getSessionSummary,
-    getPercentageOfCompletedTasksInCycle
+    startSession, // Initialize Session
+    cycleStart, // New Cycle
+    cycleModify, // Update
+    endSession, // Quit
+    stopSession, // Pause
+    getSessionSummary, // Summary readout
+    getPercentageOfCompletedTasksInCycle // Guess this will feed into Session Summary
   } = usePomoSession();
 
   const startOrPauseTimer = () => {
