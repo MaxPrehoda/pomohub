@@ -67,7 +67,7 @@ export default class PomoSession {
     this.isRunning = false;
   }
 
-  getExpectedVsActualPercentage(cycleIndex: number): number {
+  getPercentageOfCompletedTasksInCycle(cycleIndex: number): number {
     const actualCycleData = this.cycleArray[cycleIndex];
     const expectedCycleData = this.expectedCycleArray[cycleIndex];
 

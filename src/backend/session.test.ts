@@ -37,6 +37,6 @@ describe('Session', () => {
 
     session.cycleModify(modifiedTask1);
 
-    expect(session.getExpectedVsActualPercentage(0)).toBe(50);
+    expect(session.getPercentageOfCompletedTasksInCycle(0)).toBe(50);
   });
 });
