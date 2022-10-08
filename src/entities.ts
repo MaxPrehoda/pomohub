@@ -8,10 +8,12 @@ export interface ConfigInterface {
 export interface SessionInterface {
   startingDateTime: Date | null;
   numberOfCyclesCompleted: number;
-  cycleArray: CycleData[];
-  expectedCycleArray: CycleData[];
+  cycleArray: Array<CycleData>;
+  expectedCycleArray: Array<CycleData>;
   isRunning: boolean;
   endingDateTime: Date | null;
+  // not sure what the usage of sessionTimestamp is, but just added it here since its a setting in the default
+  // sessionTimestamp: Date | null;
 }
 export interface PomoHubLocalStorageInterface {
   username: string;
