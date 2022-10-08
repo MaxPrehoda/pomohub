@@ -97,13 +97,15 @@ export default function usePomoSession(defaultData = defaultPomoSessionData) {
   };
 
   const getSessionSummary = () => {
+    const currentEndingDateTime =
+      pomoSessionData.cycleArray.length > 0 ? pomoSessionData.cycleArray[-1].cycleEnd : null;
     return {
       startingDateTime: pomoSessionData.startingDateTime,
       numberOfCyclesCompleted: pomoSessionData.numberOfCyclesCompleted,
       cycleArray: pomoSessionData.cycleArray,
       expectedCycleArray: pomoSessionData.expectedCycleArray,
       isRunning: pomoSessionData.isRunning,
-      endingDateTime: pomoSessionData.cycleArray[pomoSessionData.cycleArray.length - 1].cycleEnd
+      endingDateTime: currentEndingDateTime
     };
   };
 
