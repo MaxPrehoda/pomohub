@@ -23,7 +23,7 @@ function ExportSessionButton() {
       onClick={exportSessionSummary}
       disabled={isButtonDisabled}
     >
-      Export Session Summary (this does not work yet)
+      Export Session Summary
     </button>
   );
 }
