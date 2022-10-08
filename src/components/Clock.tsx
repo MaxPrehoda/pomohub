@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import { ConfigInterface, PomoHubLocalStorageInterface } from '../entities';
+import usePomoSession from '../backend/session';
+
+import { ConfigInterface, Tasks, CycleData, PomoHubLocalStorageInterface, SessionInterface } from '../entities';
 
 function formatDisplayTime(time: number) {
   const minutes = Math.floor(time / 60);
@@ -11,7 +13,8 @@ function formatDisplayTime(time: number) {
 
 function Clock(
   { cycleDurationMinutes, stepDurationMinutes, maximumCycleDurationMinutes }: ConfigInterface,
-  { username, storedSessions }: PomoHubLocalStorageInterface) {
+  { username, storedSessions }: PomoHubLocalStorageInterface
+) {
   const cycleDurationSeconds = cycleDurationMinutes * 60;
   const stepDurationSeconds = stepDurationMinutes * 60;
   const maximumCycleDurationSeconds = maximumCycleDurationMinutes * 60;
@@ -21,7 +24,22 @@ function Clock(
   const [time, setTime] = useState(cycleDurationSeconds);
   const [isRunning, setIsRunning] = useState(false);
 
+  const {
+    pomoSessionData,
+    startSession,
+    cycleStart,
+    cycleModify,
+    endSession,
+    stopSession,
+    getSessionSummary,
+    getPercentageOfCompletedTasksInCycle
+  } = usePomoSession();
+
   const startOrPauseTimer = () => {
+    // if this is the first time the timer has been started, create a new session
+    if (!isRunning && time === cycleDurationSeconds) {
+      startSession();
+    }
     setIsRunning(!isRunning);
   };
 

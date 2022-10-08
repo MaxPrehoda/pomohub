@@ -6,7 +6,12 @@ export interface ConfigInterface {
 }
 
 export interface SessionInterface {
-  sessionTimestamp: Date;
+  startingDateTime: Date | null;
+  numberOfCyclesCompleted: number;
+  cycleArray: CycleData[];
+  expectedCycleArray: CycleData[];
+  isRunning: boolean;
+  endingDateTime: Date | null;
 }
 export interface PomoHubLocalStorageInterface {
   username: string;
@@ -18,4 +23,11 @@ export interface Tasks {
   taskId: number;
   taskState: string;
   dateChanged: Date;
+}
+
+export interface CycleData {
+  tasks: Array<Tasks>;
+  cycleStart: Date | null;
+  cycleEnd: Date | null;
+  cycleSecDur: number | null;
 }
