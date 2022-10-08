@@ -67,6 +67,10 @@ export default class PomoSession {
     this.isRunning = false;
   }
 
+  getSessionSummary() {
+    return [this.startingDate, this.numberOfCyclesCompleted, this.cycleArray, this.expectedCycleArray];
+  }
+
   getPercentageOfCompletedTasksInCycle(cycleIndex: number): number {
     const actualCycleData = this.cycleArray[cycleIndex];
     const expectedCycleData = this.expectedCycleArray[cycleIndex];
