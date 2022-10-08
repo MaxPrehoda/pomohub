@@ -54,7 +54,6 @@ export default function usePomoSession(defaultData = defaultPomoSessionData) {
 
       // if the identifier doesnt return a valid index, push the current task to the end, otherwise replace at index
       const newCycleArray: CycleData[] = [];
-      // for each cycle, if the cycleIndex is the current cycle, modify the task
       data.cycleArray.forEach((currentCycle, index) => {
         const updatedCycle: CycleData = currentCycle;
         if (index === cycleIndex) {
