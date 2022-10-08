@@ -26,6 +26,17 @@ describe('Session', () => {
     expect(session.cycleArray[0].tasks[0].taskState).toBe('complete');
   });
 
+  it('should be able to add a new task to a cycle', () => {
+    const session = new PomoSession(new Date());
+    session.startSession();
+    const task1: Tasks = { taskName: 'Task1', taskId: 1, taskState: 'incomplete', dateChanged: new Date() };
+    session.cycleStart([task1]);
+    const task2: Tasks = { taskName: 'Task2', taskId: 2, taskState: 'incomplete', dateChanged: new Date() };
+    session.cycleModify(task2);
+    expect(session.cycleArray[0].tasks.length).toBe(2);
+    expect(session.cycleArray[0].tasks[1].taskName).toBe('Task2');
+  });
+
   it('should be able to compare Expected tasks to Actual tasks', () => {
     const session = new PomoSession(new Date());
     session.startSession();
