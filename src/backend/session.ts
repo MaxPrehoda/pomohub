@@ -16,11 +16,14 @@ export default class PomoSession {
 
   cycleArray: Array<cycleData>;
 
+  expectedCycleArray: Array<cycleData>;
+
   constructor(startingDate: Date) {
     this.startingDate = startingDate;
     this.numberOfCyclesCompleted = 0;
     this.isRunning = false;
     this.cycleArray = [];
+    this.expectedCycleArray = [];
   }
 
   startSession() {
@@ -37,6 +40,7 @@ export default class PomoSession {
       cycleSecDur: null
     };
     this.cycleArray.push(currCycle);
+    this.expectedCycleArray.push(currCycle);
     // if reference to the current cycle is needed
     return currCycle.cycleStart;
   }
@@ -52,7 +56,7 @@ export default class PomoSession {
     const taskIdentifier = (task: { taskId: number }) => task.taskId === currTask.taskId;
     const taskIndex = this.cycleArray[cycleIndex].tasks.findIndex(taskIdentifier);
     // if the identifier doesnt return a valid index, push the current task to the end, otherwise replace at index
-    if (taskIndex !== -1) {
+    if (taskIndex === -1) {
       this.cycleArray[cycleIndex].tasks.push(modifyTask);
     } else {
       this.cycleArray[cycleIndex].tasks[taskIndex] = modifyTask;
@@ -61,5 +65,18 @@ export default class PomoSession {
 
   stopSession() {
     this.isRunning = false;
+  }
+
+  getExpectedVsActualPercentage(cycleIndex: number): number {
+    const actualCycleData = this.cycleArray[cycleIndex];
+    const expectedCycleData = this.expectedCycleArray[cycleIndex];
+
+    const numberOfExpectedTasks = expectedCycleData.tasks.length;
+    const numberOfActualTasksCompleted = actualCycleData.tasks.filter((task) => {
+      const expectedTaskIdentifier = (expectedTask: { taskId: number }) => expectedTask.taskId === task.taskId;
+      const expectedTaskIndex = expectedCycleData.tasks.findIndex(expectedTaskIdentifier);
+      return expectedTaskIndex !== -1 && task.taskState === 'complete';
+    }).length;
+    return (numberOfActualTasksCompleted / numberOfExpectedTasks) * 100;
   }
 }
