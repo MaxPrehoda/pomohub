@@ -37,7 +37,7 @@ describe('Session', () => {
     expect(session.cycleArray[0].tasks[1].taskName).toBe('Task2');
   });
 
-  it('should be able to compare Expected tasks to Actual tasks', () => {
+  it('should be able to compare calculate percentage completed', () => {
     const session = new PomoSession(new Date());
     session.startSession();
     const task1: Tasks = { taskName: 'Task1', taskId: 1, taskState: 'incomplete', dateChanged: new Date() };
@@ -49,5 +49,21 @@ describe('Session', () => {
     session.cycleModify(modifiedTask1);
 
     expect(session.getPercentageOfCompletedTasksInCycle(0)).toBe(50);
+  });
+
+  it('should account for new tasks being added to the cycle when determining effective percentage', () => {
+    const session = new PomoSession(new Date());
+    session.startSession();
+    const task1: Tasks = { taskName: 'Task1', taskId: 1, taskState: 'incomplete', dateChanged: new Date() };
+    const task2: Tasks = { taskName: 'Task2', taskId: 2, taskState: 'incomplete', dateChanged: new Date() };
+
+    session.cycleStart([task1, task2]);
+    const modifiedTask1: Tasks = { taskName: 'Task1', taskId: 1, taskState: 'complete', dateChanged: new Date() };
+    const task3: Tasks = { taskName: 'Task3', taskId: 3, taskState: 'incomplete', dateChanged: new Date() };
+
+    session.cycleModify(modifiedTask1);
+    session.cycleModify(task3);
+
+    expect(session.getPercentageOfCompletedTasksInCycle(0)).toBe(33);
   });
 });

@@ -77,6 +77,7 @@ export default class PomoSession {
       const expectedTaskIndex = expectedCycleData.tasks.findIndex(expectedTaskIdentifier);
       return expectedTaskIndex !== -1 && task.taskState === 'complete';
     }).length;
-    return (numberOfActualTasksCompleted / numberOfExpectedTasks) * 100;
+    const roundedPercentage = Math.round((numberOfActualTasksCompleted / numberOfExpectedTasks) * 100);
+    return roundedPercentage;
   }
 }
