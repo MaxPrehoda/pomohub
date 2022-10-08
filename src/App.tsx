@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import AppBar from './components/AppBar';
 import Clock from './components/Clock';
 import TaskList from './components/TaskList';
+import ExportLocalStorageButton from './components/ExportLocalStorageButton';
+import ExportSessionButton from './components/ExportSessionButton';
 
 import defaultConfig from './defaultConfigs';
 import defaultPomoHubData from './defaultPomoHubData';
@@ -108,6 +110,8 @@ function App() {
           <span className="invisible md:visible ">
             <TaskList />
           </span>
+          <ExportLocalStorageButton />
+          <ExportSessionButton />
         </div>
       </div>
     </div>

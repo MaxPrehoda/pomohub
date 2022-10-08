@@ -17,7 +17,7 @@ function ExportSessionButton() {
 
   return (
     <button className="bg-green-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2" onClick={exportSessionSummary}>
-      Export Session Summary
+      Export Session Summary  (This does not work, Max make this UI better)
     </button>
   );
 }

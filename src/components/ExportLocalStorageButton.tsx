@@ -16,7 +16,7 @@ function ExportLocalStorageButton() {
 
   return (
     <button className="bg-green-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2" onClick={exportLocalStorage}>
-      Export Local Storage
+      Export Local Storage (This works, Max make this UI better)
     </button>
   );
 }
