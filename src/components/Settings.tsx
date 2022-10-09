@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import Settings from './components/Settings';
 import { ConfigInterface } from '../entities';
 import ExportLocalStorageButton from './ExportLocalStorageButton';
 import ExportSessionButton from './ExportSessionButton';
 
 import { writeUsernameToPomoHubData, readPomoHubData, writeToLocalConfig, readLocalConfig } from '../App';
 
-function SettingsModal() {
+type Props = {
+  settingsHandler2: () => void;
+};
+
+function SettingsModal({ settingsHandler2 }: Props) {
   const [username, setUsername] = useState(readPomoHubData().username);
   const handleUsernameChange = (event: any) => {
     console.log(`Username changing from '${username}' to '${event.target.value}`);
@@ -91,8 +94,8 @@ function SettingsModal() {
             type="text"
             name="username"
             id="username"
-            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            value={username}
+            className="block  w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            placeholder={username}
             onChange={handleUsernameChange}
           />
         </div>
@@ -101,10 +104,25 @@ function SettingsModal() {
   );
 
   return (
-    <div className="fixed h-full w-full flex items-center justify-center transition-all">
-        <div className="w-[700px] h-[600px] text-center bg-zinc-700 rounded-lg">
-        <ExportLocalStorageButton />
+    <div className="z-20 fixed h-full w-full flex items-center justify-center transition-all">
+      <div className="w-[700px] h-[500px] text-center bg-zinc-700 rounded-lg text-white">
+        <div className="flex flex-col pl-[210px] pt-4 gap-8 w-[500px] font-semibold pt-10">
+          {usernameInput}
+          <div className="w-18">
             <ExportSessionButton />
+          </div>
+          <div className="w-18">
+            <ExportLocalStorageButton />
+          </div>
+          Time chunk
+          <input type="range" min="1" max="60" step="5" className="w-18" />
+          <button
+            onClick={settingsHandler2}
+            className="bg-indigo-500 hover:bg-indigo-400 text-white font-semibold py-2 px-4 rounded"
+          >
+            Close Settings
+          </button>
+        </div>
       </div>
     </div>
   );
