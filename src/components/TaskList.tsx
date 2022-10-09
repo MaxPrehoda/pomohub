@@ -5,7 +5,6 @@ import { SessionInterface, Tasks } from '../entities';
 import { writeSessionToPomoHubData, readPomoHubData } from '../App';
 import PomoSessionHandler from '../backend/session';
 
-
 function TaskList() {
   const [task, setTask] = useState<string>('');
   const [todoList, setTodoList] = useState<Tasks[]>([]);
@@ -25,7 +24,7 @@ function TaskList() {
       taskState: 'incomplete',
       dateChanged: currDate
     };
-    setTodoList([...todoList, newTask]);
+    setTodoList([newTask, ...todoList]);
     setTask(''); // clear inputs
     const currSession: SessionInterface = readPomoHubData().storedSessions[-1];
     const sessionHandler = new PomoSessionHandler(currSession);
@@ -94,9 +93,6 @@ function TaskList() {
         </svg>
         <h1 className="text-2xl inline text-white pl-1">Tasks</h1>
       </span>
-      {todoList.map((task: Tasks, key: number) => {
-        return <Task key={key} task={task} completeTask={completeTask} deleteTask={deleteTask} />;
-      })}
       <div className="bg-transparent p-2 rounded-md text-center hover:opacity-60 border-2 border-zinc-700">
         <input
           className="bg-transparent outline-none"
@@ -118,6 +114,11 @@ function TaskList() {
         </svg>
         <button onClick={addTask}>Add Task</button>
       </div>
+      <div className="h-[200px] overflow-auto">
+        {todoList.map((task: Tasks, key: number) => {
+          return <Task className="mt-2" key={key} task={task} completeTask={completeTask} deleteTask={deleteTask} />;
+        })}
+      </div>
     </div>
   );
 }
@@ -126,4 +127,3 @@ export default TaskList;
 function taskState(arg0: number, taskState: any, arg2: string) {
   throw new Error('Function not implemented.');
 }
-
