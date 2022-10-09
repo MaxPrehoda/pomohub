@@ -38,7 +38,7 @@ export default class PomoSessionHandler {
   // come back
   cycleModify(currTask: Tasks): SessionInterface {
     // initialize new timestamp & locate the current cycle in the cycle array
-    if (this.sessionData.cycleArray === []) {
+    if (this.sessionData.cycleArray.length !== 0) {
       throw new Error('cycleArray cannot be empty.');
     }
     const currDate = new Date();
@@ -47,13 +47,17 @@ export default class PomoSessionHandler {
     modifyTask.dateChanged = currDate;
     // filter for the specific task if existing, otherwise will get -1 index error
     // const taskIdentifier = (task: { taskId: number }) => task.taskId === currTask.taskId;
-    const originaltask = this.sessionData.cycleArray[-1].tasks.filter((tasks) => tasks.taskId === currTask.taskId);
-    const taskIndex = this.sessionData.cycleArray[-1].tasks.indexOf(originaltask[0]);
+    const originaltask = this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].tasks.filter(
+      (tasks) => tasks.taskId === currTask.taskId
+    );
+    const taskIndex = this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].tasks.indexOf(
+      originaltask[0]
+    );
     // if the identifier doesnt return a valid index, push the current task to the end, otherwise replace at index
     if (taskIndex === -1) {
-      this.sessionData.cycleArray[-1].tasks.push(modifyTask);
+      this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].tasks.push(modifyTask);
     } else {
-      this.sessionData.cycleArray[-1].tasks[taskIndex] = modifyTask;
+      this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].tasks[taskIndex] = modifyTask;
     }
     return this.sessionData;
   }
@@ -65,16 +69,21 @@ export default class PomoSessionHandler {
 
   endSession(nextCycle: CycleData): [SessionInterface, SessionInterface] {
     this.sessionData.numberOfCyclesCompleted += 1;
-    this.sessionData.cycleArray[-1].cycleEnd = new Date();
+    this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleEnd = new Date();
 
     const lastSessionData = this.sessionData;
     const newSession = new PomoSessionHandler();
     newSession.sessionData.cycleArray.push(nextCycle);
     newSession.sessionData.expectedCycleArray.push(nextCycle);
 
-    const remainingTasks = lastSessionData.cycleArray[-1].tasks.filter((task) => task.taskState === 'incomplete');
+    const remainingTasks = lastSessionData.cycleArray[lastSessionData.cycleArray.length - 1].tasks.filter(
+      (task) => task.taskState === 'incomplete'
+    );
     const missingTasks = remainingTasks.filter((tasks) => !nextCycle.tasks.includes(tasks));
-    newSession.sessionData.cycleArray[-1].tasks = [...remainingTasks, ...missingTasks];
+    newSession.sessionData.cycleArray[newSession.sessionData.cycleArray.length - 1].tasks = [
+      ...remainingTasks,
+      ...missingTasks
+    ];
 
     return [lastSessionData, newSession.sessionData];
   }
