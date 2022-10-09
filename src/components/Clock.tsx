@@ -78,12 +78,6 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
       // writeSessionToPomoHubData(updatedSession);
     }
 
-    // Final check: if there is still no current session with a current cycle, start a new cycle with no tasks
-    if (readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1].cycleArray.length === 0) {
-      const sessionHandler = new PomoSessionHandler();
-      const updatedSession = sessionHandler.cycleStart([]);
-      writeSessionToPomoHubData(updatedSession);
-    }
     console.log('Current session data is', readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1]);
     setIsRunning(!isRunning);
   };
