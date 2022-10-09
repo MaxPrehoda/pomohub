@@ -90,7 +90,8 @@ function Clock(
       if (time === 0) {
         setIsRunning(false);
         // call endCycle logic here
-        ding.play(); // play 'done with cycle' sound
+        ding.play(); // play 'done with cycle' sound notification
+        // ask user if they want to start a new cycle or end the current session
       }
     } else {
       const interval = setInterval(() => {
@@ -139,7 +140,7 @@ function Clock(
               />
             </svg>
           </button>
-          <button className=" bg-green-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2" onClick={incrementTimerByStep}>
+          <button className=" bg-emerald-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2" onClick={incrementTimerByStep}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

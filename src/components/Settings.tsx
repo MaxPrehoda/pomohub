@@ -104,10 +104,16 @@ function SettingsModal({ settingsHandler2 }: Props) {
   );
 
   return (
-    <div className="z-20 fixed h-full w-full flex items-center justify-center transition-all">
-      <div className="w-[700px] h-[600px] text-center bg-zinc-700 rounded-lg text-white">
-        <div className="flex flex-col pl-[210px] pt-24 gap-8 w-[500px] font-semibold pt-10">
+    <div className="z-20 fixed h-full w-full flex items-center justify-center transition-all pb-10">
+      <div className="w-[700px] h-[650px] text-center bg-zinc-700 rounded-lg text-white">
+        <div className="flex flex-col pl-[210px] pt-28 gap-8 w-[500px] font-semibold pt-10">
           {usernameInput}
+          <button
+            /*onClick={sessionHandler}*/
+            className="bg-emerald-500 hover:bg-emerald-400 text-white font-semibold py-2 px-4 rounded"
+          >
+            View session summary
+          </button>
           <div className="w-18">
             <ExportSessionButton />
           </div>
@@ -118,7 +124,7 @@ function SettingsModal({ settingsHandler2 }: Props) {
           <input type="range" min="1" max="60" step="5" className="w-18" />
           <button
             onClick={settingsHandler2}
-            className="bg-indigo-500 hover:bg-indigo-400 text-white font-semibold py-2 px-4 rounded"
+            className="bg-red-400 hover:bg-red-300 text-white font-semibold py-2 px-4 rounded"
           >
             Close Settings
           </button>
