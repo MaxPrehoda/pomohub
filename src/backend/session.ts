@@ -23,6 +23,8 @@ export default class PomoSessionHandler {
   }
 
   cycleEnd(): SessionInterface {
+    console.log(this.sessionData)
+    console.log(this.sessionData.cycleArray)
     this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleEnd = new Date();
     return this.sessionData;
   }

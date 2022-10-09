@@ -110,7 +110,7 @@ function App() {
   const [pomoHubData, setPomoHubData] = useState(loadOrCreatePomoHubData());
   const [showModal, setShowModal] = useState(false);
 
-  const showLogs = false;
+  const showLogs = true;
   if (showLogs) {
     logPomoHubData(pomoHubData);
     logLocalConfigs(config);
