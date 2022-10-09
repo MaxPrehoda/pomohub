@@ -77,6 +77,14 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
 
       // writeSessionToPomoHubData(updatedSession);
     }
+
+    // Final check: if there is still no current session with a current cycle, start a new cycle with no tasks
+    if (readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1].cycleArray.length === 0) {
+      const sessionHandler = new PomoSessionHandler();
+      const updatedSession = sessionHandler.cycleStart([]);
+      writeSessionToPomoHubData(updatedSession);
+    }
+    console.log('Current session data is', readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1]);
     setIsRunning(!isRunning);
   };
 
@@ -98,11 +106,29 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
     }
   };
 
+  const checkIfUserEndedCycle = () => {
+    console.log(time);
+    if (time <= 0) {
+      console.log('--------- cycle ended');
+      ding.play();
+      const currentLocalSessions = readPomoHubData().storedSessions;
+      const currentSession = currentLocalSessions[currentLocalSessions.length - 1];
+      const sessionHandler = new PomoSessionHandler(currentSession);
+      const updatedSession = sessionHandler.cycleEnd();
+      writeSessionToPomoHubData(updatedSession);
+      setTime(cycleDurationSeconds);
+    }
+  };
+
   useEffect(() => {
     if (!(isRunning && time > 0)) {
       if (time === 0) {
         setIsRunning(false);
-        // call endCycle logic here
+        const currentLocalSessions = readPomoHubData().storedSessions;
+        const currSession: SessionInterface = currentLocalSessions[currentLocalSessions.length - 1];
+        const sessionHandler = new PomoSessionHandler(currSession);
+        const updatedSession = sessionHandler.cycleEnd();
+        writeSessionToPomoHubData(updatedSession);
         ding.play(); // play 'done with cycle' sound notification
         // ask user if they want to start a new cycle or end the current session
       }
@@ -121,7 +147,13 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
       <div className="h-[300px] w-[500px] md:w-[375px] md:h-[200px] lg:w-[450px] lg:h-[230px] lg:mb-12 bg-zinc-700 rounded-md text-center">
         <h1 className=" pt-16 md:pt-2 text-9xl lg:text-9xl font-semibold text-white pt-8">{displayTime}</h1>
         <div className="flex-row mt-3">
-          <button className="bg-red-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2" onClick={decrementTimerByStep}>
+          <button
+            className="bg-red-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2"
+            onClick={() => {
+              decrementTimerByStep();
+              checkIfUserEndedCycle();
+            }}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
