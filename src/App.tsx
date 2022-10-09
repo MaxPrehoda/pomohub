@@ -124,12 +124,12 @@ function App() {
   return (
     <div className="flex flex-col h-screen transition-opacity duration-75">
       {window.Main && (
-        <div className="flex-none">
+        <div className="flex-none display:none visiblility:none">
           <AppBar settingsHandler={handleSettingsModal} />
         </div>
       )}
       <div className="flex-auto">
-        {showModal ? <SettingsModal /> : <div />}
+        {showModal ? <SettingsModal settingsHandler2={handleSettingsModal} /> : <div />}
         <div className=" flex flex-col justify-center items-center h-full bg-zinc-900 space-y-4">
           {clock}
           <span className="invisible md:visible ">

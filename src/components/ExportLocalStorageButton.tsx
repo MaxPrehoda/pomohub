@@ -16,7 +16,7 @@ function ExportLocalStorageButton() {
 
   return (
     <button
-      className="bg-purple-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2 disabled:opacity-50"
+      className="bg-indigo-500 hover:bg-indigo-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2 disabled:opacity-50 font-semibold"
       onClick={exportLocalStorage}
     >
       Export Local Storage
