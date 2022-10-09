@@ -79,8 +79,6 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
 
   const startOrPauseTimer = () => {
     // if this is the first time the timer has been started, create a new session
-    startSession()
-
     console.log(
       'Current session data is',
       readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1]
@@ -121,6 +119,7 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
   };
 
   useEffect(() => {
+    startSession()
     if (!(isTimerRunning && time > 0)) {
       checkIfUserEndedCycle()
     } else {
