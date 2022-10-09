@@ -7,8 +7,7 @@ const defaultPomoSessionData: SessionInterface = {
   isRunning: false,
   cycleArray: [],
   expectedCycleArray: [],
-  endingDateTime: null,
-  sessionTimestamp: null
+  endingDateTime: null
 };
 
 export default function usePomoSession(defaultData = defaultPomoSessionData) {

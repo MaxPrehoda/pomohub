@@ -6,7 +6,7 @@ import SettingsModal from './components/Settings';
 import defaultConfig from './defaultConfigs';
 import defaultPomoHubData from './defaultPomoHubData';
 
-import { PomoHubLocalStorageInterface, ConfigInterface } from './entities';
+import { PomoHubLocalStorageInterface, ConfigInterface, SessionInterface } from './entities';
 
 const loadOrCreateConfig = (): ConfigInterface => {
   const config = localStorage.getItem('config');
@@ -77,6 +77,18 @@ export const readLocalConfig = () => {
 export const writeUsernameToPomoHubData = (username: string) => {
   const pomoHubData = readPomoHubData();
   pomoHubData.username = username;
+  localStorage.setItem('PomoHubData', JSON.stringify(pomoHubData));
+};
+
+export const writeSessionToPomoHubData = (session: SessionInterface) => {
+  const pomoHubData = readPomoHubData();
+  // check through all sessions to see if there is a session with the same date
+  const sessionIndex = pomoHubData.sessions.findIndex((s: SessionInterface) => s.startingDateTime === session.startingDateTime);
+  if (sessionIndex === -1) {
+    pomoHubData.sessions.push(session);
+  } else {
+    pomoHubData.sessions[sessionIndex] = session;
+  }
   localStorage.setItem('PomoHubData', JSON.stringify(pomoHubData));
 };
 
