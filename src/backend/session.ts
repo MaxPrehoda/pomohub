@@ -11,9 +11,12 @@ const defaultPomoSessionData: SessionInterface = {
 
 export default class PomoSessionHandler {
   sessionData: SessionInterface;
+  
+  lastCycle: CycleData;
 
   constructor(sessionData: SessionInterface = defaultPomoSessionData) {
     this.sessionData = sessionData;
+    this.lastCycle = this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1];
   }
 
   startSession(): SessionInterface {
