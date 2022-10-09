@@ -105,8 +105,8 @@ function SettingsModal({ settingsHandler2 }: Props) {
 
   return (
     <div className="z-20 fixed h-full w-full flex items-center justify-center transition-all">
-      <div className="w-[700px] h-[500px] text-center bg-zinc-700 rounded-lg text-white">
-        <div className="flex flex-col pl-[210px] pt-4 gap-8 w-[500px] font-semibold pt-10">
+      <div className="w-[700px] h-[600px] text-center bg-zinc-700 rounded-lg text-white">
+        <div className="flex flex-col pl-[210px] pt-24 gap-8 w-[500px] font-semibold pt-10">
           {usernameInput}
           <div className="w-18">
             <ExportSessionButton />
