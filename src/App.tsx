@@ -128,11 +128,11 @@ function App() {
           <AppBar settingsHandler={handleSettingsModal} />
         </div>
       )}
-      <div className="flex-auto">
+      <div className="flex-auto overflow-hidden">
         {showModal ? <SettingsModal settingsHandler2={handleSettingsModal} /> : <div />}
-        <div className=" flex flex-col justify-center items-center h-full bg-zinc-900 space-y-4">
+        <div className=" flex flex-col justify-center items-center h-full bg-zinc-900 space-y-4 pt-44 pb-80 md:pb-0">
           {clock}
-          <span className="invisible md:visible ">
+          <span className="hidden md:block md:pt-0 ">
             <TaskList />
           </span>
         </div>

@@ -114,7 +114,7 @@ function TaskList() {
         </svg>
         <button onClick={addTask}>Add Task</button>
       </div>
-      <div className="h-[400px] overflow-auto flex-col gap-2 scrollbar">
+      <div className="h-[250px] overflow-auto flex-col gap-2 scrollbar mb-12 ml-0.5">
         {todoList.map((task: Tasks, key: number) => {
           return (
             <div className="mb-3">
