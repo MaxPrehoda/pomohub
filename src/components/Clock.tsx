@@ -34,14 +34,38 @@ function Clock(
       writeSessionToPomoHubData(newSession);
     }
     if (!isRunning && !isStarted) {
-      const currSession: SessionInterface = readPomoHubData().storedSessions[-1];
+      
+      const sessionsList = readPomoHubData().storedSessions;
+      console.log(sessionsList);
+      console.log('list above');
+      const currSession: SessionInterface = sessionsList[-1];
       const sessionHandler = new PomoSessionHandler(currSession);
-      // const updatedSession = sessionHandler.cycleStart();
+      // check if there's a previous cycle / session
+      console.log(currSession.cycleArray);
+      console.log('Check before');
+
+      if (currSession.cycleArray !== []) {
+        const updatedSession = sessionHandler.cycleStart(currSession.cycleArray[-1].tasks);
+        writeSessionToPomoHubData(updatedSession);
+      } else if (readPomoHubData().storedSession.length >= 2) {
+        if (readPomoHubData().storedSessions[-2].cycleArray.length === 0) {
+          const updatedSession = sessionHandler.cycleStart([]);
+          writeSessionToPomoHubData(updatedSession);
+        } else {
+          const updatedSession = sessionHandler.cycleStart(readPomoHubData().storedSessions[-2].cycleArray[-1]);
+          writeSessionToPomoHubData(updatedSession);
+        }
+      } else {
+        const updatedSession = sessionHandler.cycleStart([]);
+        writeSessionToPomoHubData(updatedSession);
+      }
+
       // writeSessionToPomoHubData(updatedSession);
     }
     setIsRunning(!isRunning);
   };
 
+  // dont touch 
   const decrementTimerByStep = () => {
     if (time > stepDurationSeconds) {
       setTime(time - stepDurationSeconds);
@@ -50,6 +74,7 @@ function Clock(
     }
   };
 
+  // dont touch 
   const incrementTimerByStep = () => {
     if (time < maximumCycleDurationSeconds - stepDurationSeconds) {
       setTime(time + stepDurationSeconds);
@@ -62,6 +87,7 @@ function Clock(
     if (!(isRunning && time > 0)) {
       if (time === 0) {
         setIsRunning(false);
+        // call endCycle logic here
       }
     } else {
       const interval = setInterval(() => {
