@@ -109,8 +109,12 @@ function App() {
   const [config, setConfig] = useState(loadOrCreateConfig());
   const [pomoHubData, setPomoHubData] = useState(loadOrCreatePomoHubData());
   const [showModal, setShowModal] = useState(false);
-  logPomoHubData(pomoHubData);
-  logLocalConfigs(readLocalConfig());
+
+  const showLogs = false;
+  if (showLogs) {
+    logPomoHubData(pomoHubData);
+    logLocalConfigs(config);
+  }
   const clock = Clock(config);
 
   const handleSettingsModal = () => {
