@@ -12,8 +12,6 @@ export interface SessionInterface {
   expectedCycleArray: Array<CycleData>;
   isRunning: boolean;
   endingDateTime: Date | null;
-  // not sure what the usage of sessionTimestamp is, but just added it here since its a setting in the default
-  // sessionTimestamp: Date | null;
 }
 export interface PomoHubLocalStorageInterface {
   username: string;
