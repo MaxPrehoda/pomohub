@@ -35,33 +35,41 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
     }
     if (!isRunning && !isStarted) {
       const sessionsList = readPomoHubData().storedSessions;
-      console.log(sessionsList);
-      console.log('list above');
       const currSession: SessionInterface = sessionsList[sessionsList.length - 1];
       const sessionHandler = new PomoSessionHandler(currSession);
-      // check if there's a previous cycle / session
-      console.log(sessionsList[sessionsList.length - 1]);
-      console.log(currSession.cycleArray);
-      console.log('Check before');
-      console.log(currSession.cycleArray.length)
+      // if there is a session with cycles in progress, start a new cycle with the leftover tasks of the latest cycle
       if (currSession.cycleArray.length !== 0) {
-        console.log('here');
-        console.log(currSession.cycleArray[currSession.cycleArray.length - 1])
-        // if cycleArray is not empty
         const updatedSession = sessionHandler.cycleStart(
           currSession.cycleArray[currSession.cycleArray.length - 1].tasks
         );
         writeSessionToPomoHubData(updatedSession);
+
+        // if there are no cycles in the current session, check for a previous session
       } else if (readPomoHubData().storedSessions.length >= 2) {
-        if (readPomoHubData().storedSessions[sessionsList.length - 2].cycleArray.length === 0) {
-          const updatedSession = sessionHandler.cycleStart([]);
+        const currentLocalSessions = readPomoHubData().storedSessions;
+        const previousSession = currentLocalSessions[currentLocalSessions.length - 2];
+
+        // if there is a previous session, check if that session has cycles
+        if (previousSession.cycleArray.length !== 0) {
+          const previousSessionTasks = previousSession.cycleArray[previousSession.cycleArray.length - 1].tasks;
+          const updatedSession = sessionHandler.cycleStart(previousSessionTasks);
           writeSessionToPomoHubData(updatedSession);
-        } else {
-          const updatedSession = sessionHandler.cycleStart(
-            readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 2].cycleArray[cycleArray.length - 1]
-          );
+
+          // in the edge case that the previous session has no cycles, but there is a session from two sessions ago,
+          // check if that "two sessions ago" session has cycles
+        } else if (currentLocalSessions[currentLocalSessions.length - 2].cycleArray.length !== 0) {
+          const twoSessionsAgoSession = currentLocalSessions[currentLocalSessions.length - 2];
+          const twoSessionsAgoSessionTasks =
+            twoSessionsAgoSession.cycleArray[twoSessionsAgoSession.cycleArray.length - 1].tasks;
+          const updatedSession = sessionHandler.cycleStart(twoSessionsAgoSessionTasks);
           writeSessionToPomoHubData(updatedSession);
         }
+
+        // otherwise, start a new session with no tasks
+        const updatedSession = sessionHandler.cycleStart([]);
+        writeSessionToPomoHubData(updatedSession);
+
+        // if there are no previous sessions, start a new session with no tasks
       } else {
         const updatedSession = sessionHandler.cycleStart([]);
         writeSessionToPomoHubData(updatedSession);
