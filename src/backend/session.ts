@@ -22,6 +22,11 @@ export default class PomoSessionHandler {
     return this.sessionData;
   }
 
+  cycleEnd(): SessionInterface {
+    this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleEnd = new Date();
+    return this.sessionData;
+  }
+
   cycleStart(savedTasks: Tasks[]): SessionInterface {
     const unfinishedTasks = savedTasks.filter((task) => task.taskState === 'incomplete');
     const currCycle: CycleData = {
