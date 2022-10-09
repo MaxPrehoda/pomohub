@@ -20,6 +20,8 @@ function Clock(
   const stepDurationSeconds = stepDurationMinutes * 60;
   const maximumCycleDurationSeconds = maximumCycleDurationMinutes * 60;
 
+  const ding = new Audio('../assets/Drop.mp3');
+
   const [time, setTime] = useState(cycleDurationSeconds);
   const [isRunning, setIsRunning] = useState(false); // used for the start and pause functionality
   // const [isBreak, setBreak] = useState(false);
@@ -88,6 +90,7 @@ function Clock(
       if (time === 0) {
         setIsRunning(false);
         // call endCycle logic here
+        ding.play(); // play 'done with cycle' sound
       }
     } else {
       const interval = setInterval(() => {
