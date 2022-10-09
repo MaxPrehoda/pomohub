@@ -40,9 +40,10 @@ function Clock(
       const sessionsList = readPomoHubData().storedSessions;
       console.log(sessionsList);
       console.log('list above');
-      const currSession: SessionInterface = sessionsList[-1];
+      const currSession: SessionInterface = sessionsList[sessionsList.length-1];
       const sessionHandler = new PomoSessionHandler(currSession);
       // check if there's a previous cycle / session
+      console.log(sessionsList[sessionsList.length-1]);
       console.log(currSession.cycleArray);
       console.log('Check before');
 
