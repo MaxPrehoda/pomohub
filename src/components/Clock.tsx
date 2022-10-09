@@ -118,6 +118,8 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
   useEffect(() => {
     if (isTimerRunning && !isSessionStarted) {
       startSession();
+    } else if (isTimerRunning && isSessionStarted) {
+    console.log('running');
     }
     if (!(isTimerRunning && time > 0)) {
       checkIfUserEndedCycle();
@@ -125,6 +127,7 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
       const interval = setInterval(() => {
         setTime(time - 1);
       }, 1000);
+      //might be here ;p
       return () => clearInterval(interval);
     }
   }, [isTimerRunning, time]);

@@ -1,7 +1,7 @@
 import { KeyboardEvent } from 'electron';
 import React, { useEffect, ChangeEvent, useState } from 'react';
 import Task from './Task';
-import { SessionInterface, Tasks } from '../entities';
+import { CycleData, SessionInterface, Tasks } from '../entities';
 import { writeSessionToPomoHubData, readPomoHubData } from '../App';
 import PomoSessionHandler from '../backend/session';
 
@@ -26,14 +26,18 @@ function TaskList() {
     };
     setTodoList([newTask, ...todoList]);
     setTask(''); // clear inputs
-    const currSession: SessionInterface = readPomoHubData().storedSessions[-1];
+    const currSession: SessionInterface = readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1];
     const sessionHandler = new PomoSessionHandler(currSession);
+    const currCycle: CycleData = currSession.cycleArray[currSession.cycleArray.length - 1];
+    console.log(currSession)
+    currCycle.tasks = [newTask, ...currCycle.tasks];
+    sessionHandler.updateSession(currCycle);
     // const updatedSession = sessionHandler.cycleModify(newTask);
     // writeSessionToPomoHubData(updatedSession);
   };
 
   const handleEnter = (task, event: KeyboardEvent): void => {
-    if ((event.target.name === 'task') & (event.key === 'Enter')) {
+    if (event.target.name === 'task' && event.key === 'Enter') {
       addTask(task);
     }
   };

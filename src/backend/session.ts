@@ -23,8 +23,8 @@ export default class PomoSessionHandler {
   }
 
   cycleEnd(): SessionInterface {
-    console.log(this.sessionData)
-    console.log(this.sessionData.cycleArray)
+    console.log(this.sessionData);
+    console.log(this.sessionData.cycleArray);
     this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleEnd = new Date();
     return this.sessionData;
   }
@@ -93,6 +93,11 @@ export default class PomoSessionHandler {
     ];
 
     return [lastSessionData, newSession.sessionData];
+  }
+
+  updateSession(cycleContents: CycleData): SessionInterface {
+    this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1] = cycleContents;
+    return this.sessionData;
   }
 
   getSessionSummary(): [Date, number, CycleData[], CycleData[]] {
