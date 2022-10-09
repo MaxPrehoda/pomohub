@@ -20,6 +20,8 @@ function Clock(
   const maximumCycleDurationSeconds = maximumCycleDurationMinutes * 60;
 
   console.log('Clock has access to storedSessions:', storedSessions);
+  console.log(storedSessions);
+  console.log();
 
   const [time, setTime] = useState(cycleDurationSeconds);
   const [isRunning, setIsRunning] = useState(false);
@@ -41,6 +43,12 @@ function Clock(
     // if this is the first time the timer has been started, create a new session
     if (!isRunning && time === cycleDurationSeconds) {
       startSession();
+      //const newSession = startSession();
+      //storedSessions.push(newSession);
+      //const seeData = cycleStart(storedSessions[-2].cycleArray[-1].tasks);
+      //console.log(storedSessions[-1].startingDateTime);
+      //console.log(seeData.startingDateTime);
+      // startCycle(storedSessions[-2]);
     }
     setIsRunning(!isRunning);
   };

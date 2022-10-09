@@ -21,6 +21,7 @@ export default function usePomoSession(defaultData = defaultPomoSessionData) {
       isRunning: true,
       startingDateTime: new Date()
     }));
+    return pomoSessionData;
   };
 
   const cycleStart = (savedTasks: Tasks[]) => {
@@ -38,7 +39,8 @@ export default function usePomoSession(defaultData = defaultPomoSessionData) {
     }));
 
     // if reference to the current cycle is needed
-    return currCycle.cycleStart;
+    // return currCycle.cycleStart;
+    return pomoSessionData;
   };
 
   const cycleModify = (currTask: Tasks) => {
