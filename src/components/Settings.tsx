@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-
+import Settings from './components/Settings';
 import { ConfigInterface } from '../entities';
+import ExportLocalStorageButton from './ExportLocalStorageButton';
+import ExportSessionButton from './ExportSessionButton';
 
 import { writeUsernameToPomoHubData, readPomoHubData, writeToLocalConfig, readLocalConfig } from '../App';
 
-function settingsDropdown() {
+function SettingsModal() {
   const [username, setUsername] = useState(readPomoHubData().username);
   const handleUsernameChange = (event: any) => {
     console.log(`Username changing from '${username}' to '${event.target.value}`);
@@ -99,15 +101,13 @@ function settingsDropdown() {
   );
 
   return (
-    <label>
-      {label}
-      <select value={value} onChange={onChange}>
-        {options.map((option) => (
-          <option value={option.value}>{option.label}</option>
-        ))}
-      </select>
-    </label>
+    <div className="fixed h-full w-full flex items-center justify-center transition-all">
+        <div className="w-[700px] h-[600px] text-center bg-zinc-700 rounded-lg">
+        <ExportLocalStorageButton />
+            <ExportSessionButton />
+      </div>
+    </div>
   );
 }
 
-export default settingsDropdown;
+export default SettingsModal;
