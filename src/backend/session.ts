@@ -64,7 +64,7 @@ export default class PomoSessionHandler {
     this.sessionData.cycleArray[-1].cycleEnd = new Date();
 
     const lastSessionData = this.sessionData;
-    const newSession = new PomoSession();
+    const newSession = new PomoSessionHandler();
     newSession.sessionData.cycleArray.push(nextCycle);
     newSession.sessionData.expectedCycleArray.push(nextCycle);
 
@@ -76,7 +76,12 @@ export default class PomoSessionHandler {
   }
 
   getSessionSummary(): [Date, number, CycleData[], CycleData[]] {
-    return [this.sessionData.startingDateTime, this.sessionData.numberOfCyclesCompleted, this.sessionData.cycleArray, this.sessionData.expectedCycleArray];
+    return [
+      this.sessionData.startingDateTime,
+      this.sessionData.numberOfCyclesCompleted,
+      this.sessionData.cycleArray,
+      this.sessionData.expectedCycleArray
+    ];
   }
 
   getPercentageOfCompletedTasksInCycle(cycleIndex: number): number {
@@ -93,4 +98,3 @@ export default class PomoSessionHandler {
     return roundedPercentage;
   }
 }
-
