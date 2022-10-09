@@ -35,21 +35,25 @@ export default class PomoSessionHandler {
     return this.sessionData;
   }
 
+  // come back
   cycleModify(currTask: Tasks): SessionInterface {
     // initialize new timestamp & locate the current cycle in the cycle array
+    if (this.sessionData.cycleArray === []) {
+      throw new Error('cycleArray cannot be empty.');
+    }
     const currDate = new Date();
-    const cycleIndex = this.sessionData.cycleArray.length - 1;
     // initialize a new task copy to modify the date stamp of
     const modifyTask: Tasks = currTask;
     modifyTask.dateChanged = currDate;
     // filter for the specific task if existing, otherwise will get -1 index error
-    const taskIdentifier = (task: { taskId: number }) => task.taskId === currTask.taskId;
-    const taskIndex = this.sessionData.cycleArray[cycleIndex].tasks.findIndex(taskIdentifier);
+    // const taskIdentifier = (task: { taskId: number }) => task.taskId === currTask.taskId;
+    const originaltask = this.sessionData.cycleArray[-1].tasks.filter((tasks) => tasks.taskId === currTask.taskId);
+    const taskIndex = this.sessionData.cycleArray[-1].tasks.indexOf(originaltask[0]);
     // if the identifier doesnt return a valid index, push the current task to the end, otherwise replace at index
     if (taskIndex === -1) {
-      this.sessionData.cycleArray[cycleIndex].tasks.push(modifyTask);
+      this.sessionData.cycleArray[-1].tasks.push(modifyTask);
     } else {
-      this.sessionData.cycleArray[cycleIndex].tasks[taskIndex] = modifyTask;
+      this.sessionData.cycleArray[-1].tasks[taskIndex] = modifyTask;
     }
     return this.sessionData;
   }
