@@ -13,9 +13,7 @@ function formatDisplayTime(time: number) {
   return displayTime;
 }
 
-function Clock(
-  { cycleDurationMinutes, stepDurationMinutes, maximumCycleDurationMinutes }: ConfigInterface,
-) {
+function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDurationMinutes }: ConfigInterface) {
   const cycleDurationSeconds = cycleDurationMinutes * 60;
   const stepDurationSeconds = stepDurationMinutes * 60;
   const maximumCycleDurationSeconds = maximumCycleDurationMinutes * 60;
@@ -26,7 +24,7 @@ function Clock(
   const [isRunning, setIsRunning] = useState(false); // used for the start and pause functionality
   // const [isBreak, setBreak] = useState(false);
   const [isStarted, setStart] = useState(false);
-  let isBreak: boolean = false;
+  const isBreak = false;
 
   const startOrPauseTimer = () => {
     // if this is the first time the timer has been started, create a new session
@@ -36,27 +34,32 @@ function Clock(
       writeSessionToPomoHubData(newSession);
     }
     if (!isRunning && !isStarted) {
-      
       const sessionsList = readPomoHubData().storedSessions;
       console.log(sessionsList);
       console.log('list above');
-      const currSession: SessionInterface = sessionsList[sessionsList.length-1];
+      const currSession: SessionInterface = sessionsList[sessionsList.length - 1];
       const sessionHandler = new PomoSessionHandler(currSession);
       // check if there's a previous cycle / session
-      console.log(sessionsList[sessionsList.length-1]);
+      console.log(sessionsList[sessionsList.length - 1]);
       console.log(currSession.cycleArray);
       console.log('Check before');
-
-      if (currSession.cycleArray.length)  {
-        //if cycleArray is not empty
-        const updatedSession = sessionHandler.cycleStart(currSession.cycleArray[currSession.cycleArray.length-1].tasks);
+      console.log(currSession.cycleArray.length)
+      if (currSession.cycleArray.length !== 0) {
+        console.log('here');
+        console.log(currSession.cycleArray[currSession.cycleArray.length - 1])
+        // if cycleArray is not empty
+        const updatedSession = sessionHandler.cycleStart(
+          currSession.cycleArray[currSession.cycleArray.length - 1].tasks
+        );
         writeSessionToPomoHubData(updatedSession);
-      } else if (readPomoHubData().storedSession.length >= 2) {
-        if (readPomoHubData().storedSessions[sessionsList.length-2].cycleArray.length === 0) {
+      } else if (readPomoHubData().storedSessions.length >= 2) {
+        if (readPomoHubData().storedSessions[sessionsList.length - 2].cycleArray.length === 0) {
           const updatedSession = sessionHandler.cycleStart([]);
           writeSessionToPomoHubData(updatedSession);
         } else {
-          const updatedSession = sessionHandler.cycleStart(readPomoHubData().storedSessions[-2].cycleArray[-1]);
+          const updatedSession = sessionHandler.cycleStart(
+            readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 2].cycleArray[cycleArray.length - 1]
+          );
           writeSessionToPomoHubData(updatedSession);
         }
       } else {
@@ -69,7 +72,7 @@ function Clock(
     setIsRunning(!isRunning);
   };
 
-  // dont touch 
+  // dont touch
   const decrementTimerByStep = () => {
     if (time > stepDurationSeconds) {
       setTime(time - stepDurationSeconds);
@@ -78,7 +81,7 @@ function Clock(
     }
   };
 
-  // dont touch 
+  // dont touch
   const incrementTimerByStep = () => {
     if (time < maximumCycleDurationSeconds - stepDurationSeconds) {
       setTime(time + stepDurationSeconds);
