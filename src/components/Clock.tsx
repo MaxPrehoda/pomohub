@@ -63,11 +63,11 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
             twoSessionsAgoSession.cycleArray[twoSessionsAgoSession.cycleArray.length - 1].tasks;
           const updatedSession = sessionHandler.cycleStart(twoSessionsAgoSessionTasks);
           writeSessionToPomoHubData(updatedSession);
+        } else {
+          // otherwise, start a new session with no tasks
+          const updatedSession = sessionHandler.cycleStart([]);
+          writeSessionToPomoHubData(updatedSession);
         }
-
-        // otherwise, start a new session with no tasks
-        const updatedSession = sessionHandler.cycleStart([]);
-        writeSessionToPomoHubData(updatedSession);
 
         // if there are no previous sessions, start a new session with no tasks
       } else {
