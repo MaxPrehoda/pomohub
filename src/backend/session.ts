@@ -9,10 +9,8 @@ const defaultPomoSessionData: SessionInterface = {
   endingDateTime: null
 };
 
-
-export default class PomoSession {
-
-  sessionData: SessionInterface
+export default class PomoSessionHandler {
+  sessionData: SessionInterface;
 
   constructor(sessionData: SessionInterface = defaultPomoSessionData) {
     this.sessionData = sessionData;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import PomoSessionHandler from '../backend/session';
 
-import { writeSessionToPomoHubData, readPomoHubData } from '../App'
+import { writeSessionToPomoHubData, readPomoHubData } from '../App';
 
 import { ConfigInterface, Tasks, CycleData, PomoHubLocalStorageInterface, SessionInterface } from '../entities';
 
@@ -21,26 +21,23 @@ function Clock(
   const maximumCycleDurationSeconds = maximumCycleDurationMinutes * 60;
 
   const [time, setTime] = useState(cycleDurationSeconds);
-  const [isRunning, setIsRunning] = useState(false);
+  const [isRunning, setIsRunning] = useState(false); // used for the start and pause functionality
   // const [isBreak, setBreak] = useState(false);
-  // const [isStarted, setStart] = useState(false);
+  const [isStarted, setStart] = useState(false);
+  let isBreak: boolean = false;
 
   const startOrPauseTimer = () => {
     // if this is the first time the timer has been started, create a new session
     if (!isRunning && time === cycleDurationSeconds) {
-      console.log('before', readPomoHubData());
       const sessionHandler = new PomoSessionHandler();
       const newSession: SessionInterface = sessionHandler.startSession();
       writeSessionToPomoHubData(newSession);
-      console.log('after', readPomoHubData());
-
-
-      //const newSession = startSession();
-      //storedSessions.push(newSession);
-      //const seeData = cycleStart(storedSessions[-2].cycleArray[-1].tasks);
-      //console.log(storedSessions[-1].startingDateTime);
-      //console.log(seeData.startingDateTime);
-      // startCycle(storedSessions[-2]);
+    }
+    if (!isRunning && !isStarted) {
+      const currSession: SessionInterface = readPomoHubData().storedSessions[-1];
+      const sessionHandler = new PomoSessionHandler(currSession);
+      // const updatedSession = sessionHandler.cycleStart();
+      // writeSessionToPomoHubData(updatedSession);
     }
     setIsRunning(!isRunning);
   };

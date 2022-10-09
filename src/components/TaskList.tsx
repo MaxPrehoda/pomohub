@@ -1,7 +1,10 @@
 import { KeyboardEvent } from 'electron';
 import React, { useEffect, ChangeEvent, useState } from 'react';
 import Task from './Task';
-import { Tasks } from '../entities';
+import { SessionInterface, Tasks } from '../entities';
+import { writeSessionToPomoHubData, readPomoHubData } from '../App';
+import PomoSessionHandler from '../backend/session';
+
 
 function TaskList() {
   const [task, setTask] = useState<string>('');
@@ -24,6 +27,10 @@ function TaskList() {
     };
     setTodoList([...todoList, newTask]);
     setTask(''); // clear inputs
+    const currSession: SessionInterface = readPomoHubData().storedSessions[-1];
+    const sessionHandler = new PomoSessionHandler(currSession);
+    // const updatedSession = sessionHandler.cycleModify(newTask);
+    // writeSessionToPomoHubData(updatedSession);
   };
 
   const handleEnter = (task, event: KeyboardEvent): void => {
@@ -38,14 +45,18 @@ function TaskList() {
     const taskIndex = todoList.findIndex((currTasks) => {
       return currTasks.taskId === taskIdToComplete;
     });
-    todoList[taskIndex].dateChanged = Date();
+    todoList[taskIndex].dateChanged = new Date();
     todoList[taskIndex].taskState = 'complete';
-    // console.log(todoList[taskIndex]);
     setTodoList(
-      todoList.filter((task) => {
-        return task.taskId !== taskIdToComplete;
+      todoList.filter((tasks) => {
+        return tasks.taskId !== taskIdToComplete;
       })
     );
+    const currSession: SessionInterface = readPomoHubData().storedSessions[-1];
+    const sessionHandler = new PomoSessionHandler(currSession);
+    const finishedTask = todoList.filter((tasks) => tasks.taskId === taskIdToComplete);
+    const updatedSession = sessionHandler.cycleModify(finishedTask[0]);
+    writeSessionToPomoHubData(updatedSession);
   };
 
   const deleteTask = (taskIdToDelete: number): void => {
