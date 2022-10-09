@@ -1,13 +1,18 @@
 import React from 'react';
-import usePomoSession from '../backend/session';
+import PomoSessionHandler from '../backend/session';
+import { readPomoHubData } from '../App';
 
 function ExportSessionButton() {
-  const { pomoSessionData, getSessionSummary } = usePomoSession();
-
-  const isButtonDisabled = Object.keys(pomoSessionData).length === 0;
+  const isButtonDisabled = readPomoHubData().storedSessions.length === 0;
 
   const exportSessionSummary = () => {
-    const summary = getSessionSummary();
+    const currentSession =
+      readPomoHubData().storedSessions.length > 0
+        ? readPomoHubData().storedSessions[-1]
+        : new PomoSessionHandler().startSession();
+
+    const sessionHandler = new PomoSessionHandler(currentSession);
+    const summary = sessionHandler.getSessionSummary();
     const summaryString = JSON.stringify(summary);
     const blob = new Blob([summaryString], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
