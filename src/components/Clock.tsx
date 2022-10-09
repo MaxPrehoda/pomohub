@@ -21,19 +21,19 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
   const ding = new Audio('../assets/Drop.mp3');
 
   const [time, setTime] = useState(cycleDurationSeconds);
-  const [isRunning, setIsRunning] = useState(false); // used for the start and pause functionality
+  const [isTimerRunning, setIsTimerRunning] = useState(false); // used for the start and pause functionality
   // const [isBreak, setBreak] = useState(false);
-  const [isStarted, setStart] = useState(false);
+  const [isSessionStarted, setIsSessionStarted] = useState(false);
   const isBreak = false;
 
   const startOrPauseTimer = () => {
     // if this is the first time the timer has been started, create a new session
-    if (!isRunning && time === cycleDurationSeconds) {
+    if (!isTimerRunning && time === cycleDurationSeconds) {
       const sessionHandler = new PomoSessionHandler();
       const newSession: SessionInterface = sessionHandler.startSession();
       writeSessionToPomoHubData(newSession);
     }
-    if (!isRunning && !isStarted) {
+    if (!isTimerRunning && !isSessionStarted) {
       const sessionsList = readPomoHubData().storedSessions;
       const currSession: SessionInterface = sessionsList[sessionsList.length - 1];
       const sessionHandler = new PomoSessionHandler(currSession);
@@ -74,12 +74,10 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
         const updatedSession = sessionHandler.cycleStart([]);
         writeSessionToPomoHubData(updatedSession);
       }
-
-      // writeSessionToPomoHubData(updatedSession);
     }
 
     console.log('Current session data is', readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1]);
-    setIsRunning(!isRunning);
+    setIsTimerRunning(!isTimerRunning);
   };
 
   // dont touch
@@ -115,9 +113,9 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
   };
 
   useEffect(() => {
-    if (!(isRunning && time > 0)) {
+    if (!(isTimerRunning && time > 0)) {
       if (time === 0) {
-        setIsRunning(false);
+        setIsTimerRunning(false);
         const currentLocalSessions = readPomoHubData().storedSessions;
         const currSession: SessionInterface = currentLocalSessions[currentLocalSessions.length - 1];
         const sessionHandler = new PomoSessionHandler(currSession);
@@ -132,7 +130,7 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [isRunning, time]);
+  }, [isTimerRunning, time]);
 
   const displayTime = formatDisplayTime(time);
 
