@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import AppBar from './components/AppBar';
 import Clock from './components/Clock';
 import TaskList from './components/TaskList';
-import ExportLocalStorageButton from './components/ExportLocalStorageButton';
-import ExportSessionButton from './components/ExportSessionButton';
-
+import SettingsModal from './components/Settings';
 import defaultConfig from './defaultConfigs';
 import defaultPomoHubData from './defaultPomoHubData';
 
@@ -94,24 +92,33 @@ const logLocalConfigs = (config: ConfigInterface) => {
 function App() {
   const [config, setConfig] = useState(loadOrCreateConfig());
   const [pomoHubData, setPomoHubData] = useState(loadOrCreatePomoHubData());
+  const [showModal, setShowModal] = useState(false);
   logPomoHubData(pomoHubData);
   logLocalConfigs(readLocalConfig());
   const clock = Clock(config, pomoHubData);
+
+  const handleSettingsModal = () => {
+    if (showModal) {
+      setShowModal(false);
+    } else {
+      setShowModal(true);
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen transition-opacity duration-75">
       {window.Main && (
         <div className="flex-none">
-          <AppBar />
+          <AppBar settingsHandler={handleSettingsModal} />
         </div>
       )}
       <div className="flex-auto">
+        {showModal ? <SettingsModal /> : <div />}
         <div className=" flex flex-col justify-center items-center h-full bg-zinc-900 space-y-4">
           {clock}
           <span className="invisible md:visible ">
             <TaskList />
           </span>
-          <ExportLocalStorageButton />
-          <ExportSessionButton />
         </div>
       </div>
     </div>

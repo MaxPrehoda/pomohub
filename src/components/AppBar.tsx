@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import Icon from '../assets/icons/clock.svg';
 
-function AppBar() {
+type Props = {
+  settingsHandler: () => void;
+};
+
+function AppBar({ settingsHandler }: Props) {
   const [isMaximize, setMaximize] = useState(false);
 
   const handleToggle = () => {
@@ -24,9 +28,7 @@ function AppBar() {
           <div className="inline-flex -mt-1">
             <button
               className="openModalBtn undraggable md:px-4 lg:px-3 pt-1 hover:bg-gray-300 pb-1"
-              onClick={() => {
-                setModalOpen(true);
-              }}
+              onClick={settingsHandler}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
