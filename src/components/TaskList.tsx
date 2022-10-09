@@ -114,9 +114,13 @@ function TaskList() {
         </svg>
         <button onClick={addTask}>Add Task</button>
       </div>
-      <div className="h-[200px] overflow-auto">
+      <div className="h-[400px] overflow-auto flex-col gap-2 scrollbar">
         {todoList.map((task: Tasks, key: number) => {
-          return <Task className="mt-2" key={key} task={task} completeTask={completeTask} deleteTask={deleteTask} />;
+          return (
+            <div className="mb-3">
+              <Task key={key} task={task} completeTask={completeTask} deleteTask={deleteTask} />
+            </div>
+          );
         })}
       </div>
     </div>

@@ -12,3 +12,19 @@
 .undraggable {
   -webkit-app-region: no-drag;
 }
+
+.scrollbar::-webkit-scrollbar {
+
+  width: 10px;
+  height: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  border-radius: 90vh;
+  width: 20px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 90vh;
+}
