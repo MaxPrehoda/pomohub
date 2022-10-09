@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-import usePomoSession from '../backend/session';
+import PomoSessionHandler from '../backend/session';
+
+import { writeSessionToPomoHubData, readPomoHubData } from '../App'
 
 import { ConfigInterface, Tasks, CycleData, PomoHubLocalStorageInterface, SessionInterface } from '../entities';
 
@@ -13,36 +15,26 @@ function formatDisplayTime(time: number) {
 
 function Clock(
   { cycleDurationMinutes, stepDurationMinutes, maximumCycleDurationMinutes }: ConfigInterface,
-  { username, storedSessions }: PomoHubLocalStorageInterface
 ) {
   const cycleDurationSeconds = cycleDurationMinutes * 60;
   const stepDurationSeconds = stepDurationMinutes * 60;
   const maximumCycleDurationSeconds = maximumCycleDurationMinutes * 60;
-
-  console.log('Clock has access to storedSessions:', storedSessions);
-  console.log(storedSessions);
-  console.log();
 
   const [time, setTime] = useState(cycleDurationSeconds);
   const [isRunning, setIsRunning] = useState(false);
   // const [isBreak, setBreak] = useState(false);
   // const [isStarted, setStart] = useState(false);
 
-  const {
-    pomoSessionData,
-    startSession, // Initialize Session
-    cycleStart, // New Cycle
-    cycleModify, // Update
-    endSession, // Quit
-    stopSession, // Pause
-    getSessionSummary, // Summary readout
-    getPercentageOfCompletedTasksInCycle // Guess this will feed into Session Summary
-  } = usePomoSession();
-
   const startOrPauseTimer = () => {
     // if this is the first time the timer has been started, create a new session
     if (!isRunning && time === cycleDurationSeconds) {
-      startSession();
+      console.log('before', readPomoHubData());
+      const sessionHandler = new PomoSessionHandler();
+      const newSession: SessionInterface = sessionHandler.startSession();
+      writeSessionToPomoHubData(newSession);
+      console.log('after', readPomoHubData());
+
+
       //const newSession = startSession();
       //storedSessions.push(newSession);
       //const seeData = cycleStart(storedSessions[-2].cycleArray[-1].tasks);

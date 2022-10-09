@@ -83,11 +83,15 @@ export const writeUsernameToPomoHubData = (username: string) => {
 export const writeSessionToPomoHubData = (session: SessionInterface) => {
   const pomoHubData = readPomoHubData();
   // check through all sessions to see if there is a session with the same date
-  const sessionIndex = pomoHubData.sessions.findIndex((s: SessionInterface) => s.startingDateTime === session.startingDateTime);
-  if (sessionIndex === -1) {
-    pomoHubData.sessions.push(session);
+  if (pomoHubData && pomoHubData.storedSessions && pomoHubData.storedSessions.length > 0) {
+    const sessionIndex = pomoHubData.storedSessions.findIndex((s: SessionInterface) => s.startingDateTime === session.startingDateTime);
+    if (sessionIndex > -1) {
+      pomoHubData.storedSessions[sessionIndex] = session;
+    } else {
+      pomoHubData.storedSessions.push(session);
+    }
   } else {
-    pomoHubData.sessions[sessionIndex] = session;
+    pomoHubData.storedSessions.push(session);
   }
   localStorage.setItem('PomoHubData', JSON.stringify(pomoHubData));
 };
@@ -107,7 +111,7 @@ function App() {
   const [showModal, setShowModal] = useState(false);
   logPomoHubData(pomoHubData);
   logLocalConfigs(readLocalConfig());
-  const clock = Clock(config, pomoHubData);
+  const clock = Clock(config);
 
   const handleSettingsModal = () => {
     if (showModal) {

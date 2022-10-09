@@ -6,7 +6,7 @@ export interface ConfigInterface {
 }
 
 export interface SessionInterface {
-  startingDateTime: Date | null;
+  startingDateTime: Date;
   numberOfCyclesCompleted: number;
   cycleArray: Array<CycleData>;
   expectedCycleArray: Array<CycleData>;

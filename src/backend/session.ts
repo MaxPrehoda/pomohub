@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Tasks, SessionInterface, CycleData } from '../entities';
 
 const defaultPomoSessionData: SessionInterface = {
@@ -10,20 +9,22 @@ const defaultPomoSessionData: SessionInterface = {
   endingDateTime: null
 };
 
-export default function usePomoSession(defaultData = defaultPomoSessionData) {
-  const [pomoSessionData, setPomoSessionData] = useState(defaultData);
 
-  const startSession = () => {
-    console.log('startSession ran');
-    setPomoSessionData((data) => ({
-      ...data,
-      isRunning: true,
-      startingDateTime: new Date()
-    }));
-    return pomoSessionData;
-  };
+export default class PomoSession {
 
-  const cycleStart = (savedTasks: Tasks[]) => {
+  sessionData: SessionInterface
+
+  constructor(sessionData: SessionInterface = defaultPomoSessionData) {
+    this.sessionData = sessionData;
+  }
+
+  startSession(): SessionInterface {
+    this.sessionData.isRunning = true;
+    this.sessionData.startingDateTime = new Date();
+    return this.sessionData;
+  }
+
+  cycleStart(savedTasks: Tasks[]): SessionInterface {
     const unfinishedTasks = savedTasks.filter((task) => task.taskState === 'incomplete');
     const currCycle: CycleData = {
       tasks: unfinishedTasks,
@@ -31,88 +32,58 @@ export default function usePomoSession(defaultData = defaultPomoSessionData) {
       cycleEnd: null,
       cycleSecDur: null
     };
-    setPomoSessionData((data) => ({
-      ...data,
-      cycleArray: [...data.cycleArray, currCycle],
-      expectedCycleArray: [...data.expectedCycleArray, currCycle]
-    }));
+    this.sessionData.cycleArray.push(currCycle);
+    this.sessionData.expectedCycleArray.push(currCycle);
+    return this.sessionData;
+  }
 
-    // if reference to the current cycle is needed
-    // return currCycle.cycleStart;
-    return pomoSessionData;
-  };
-
-  const cycleModify = (currTask: Tasks) => {
+  cycleModify(currTask: Tasks): SessionInterface {
     // initialize new timestamp & locate the current cycle in the cycle array
     const currDate = new Date();
-    setPomoSessionData((data) => {
-      const cycleIndex = data.cycleArray.length - 1;
-      // initialize a new task copy to modify the date stamp of
-      const modifyTask: Tasks = currTask;
-      modifyTask.dateChanged = currDate;
-      // filter for the specific task if existing, otherwise will get -1 index error
-      const taskIdentifier = (task: { taskId: number }) => task.taskId === currTask.taskId;
-      const taskIndex = data.cycleArray[cycleIndex].tasks.findIndex(taskIdentifier);
+    const cycleIndex = this.sessionData.cycleArray.length - 1;
+    // initialize a new task copy to modify the date stamp of
+    const modifyTask: Tasks = currTask;
+    modifyTask.dateChanged = currDate;
+    // filter for the specific task if existing, otherwise will get -1 index error
+    const taskIdentifier = (task: { taskId: number }) => task.taskId === currTask.taskId;
+    const taskIndex = this.sessionData.cycleArray[cycleIndex].tasks.findIndex(taskIdentifier);
+    // if the identifier doesnt return a valid index, push the current task to the end, otherwise replace at index
+    if (taskIndex === -1) {
+      this.sessionData.cycleArray[cycleIndex].tasks.push(modifyTask);
+    } else {
+      this.sessionData.cycleArray[cycleIndex].tasks[taskIndex] = modifyTask;
+    }
+    return this.sessionData;
+  }
 
-      // if the identifier doesnt return a valid index, push the current task to the end, otherwise replace at index
-      const newCycleArray: CycleData[] = [];
-      data.cycleArray.forEach((currentCycle, index) => {
-        const updatedCycle: CycleData = currentCycle;
-        if (index === cycleIndex) {
-          if (taskIndex === -1) {
-            updatedCycle.tasks.push(modifyTask);
-          } else {
-            updatedCycle.tasks[taskIndex] = modifyTask;
-          }
-        }
-        newCycleArray.push(updatedCycle);
-      });
-      return {
-        ...data,
-        cycleArray: newCycleArray
-      };
-    });
-  };
+  stopSession(): SessionInterface {
+    this.sessionData.isRunning = false;
+    return this.sessionData;
+  }
 
-  const stopSession = () => {
-    setPomoSessionData((data) => ({
-      ...data,
-      isRunning: false
-    }));
-  };
+  endSession(nextCycle: CycleData): [SessionInterface, SessionInterface] {
+    this.sessionData.numberOfCyclesCompleted += 1;
+    this.sessionData.cycleArray[-1].cycleEnd = new Date();
 
-  const endSession = (nextCycle: CycleData) => {
-    setPomoSessionData((data) => {
-      const newData = data;
-      newData.numberOfCyclesCompleted += 1;
-      newData.cycleArray[-1].cycleEnd = new Date();
-      const remainingTasks = newData.cycleArray[-1].tasks.filter((task) => task.taskState === 'incomplete');
-      const missingTasks = remainingTasks.filter((tasks) => !nextCycle.tasks.includes(tasks));
-      const revisedCycle = nextCycle;
-      revisedCycle.tasks = [...revisedCycle.tasks, ...missingTasks];
+    const lastSessionData = this.sessionData;
+    const newSession = new PomoSession();
+    newSession.sessionData.cycleArray.push(nextCycle);
+    newSession.sessionData.expectedCycleArray.push(nextCycle);
 
-      return {
-        ...newData
-      };
-    });
-  };
+    const remainingTasks = lastSessionData.cycleArray[-1].tasks.filter((task) => task.taskState === 'incomplete');
+    const missingTasks = remainingTasks.filter((tasks) => !nextCycle.tasks.includes(tasks));
+    newSession.sessionData.cycleArray[-1].tasks = [...remainingTasks, ...missingTasks];
 
-  const getSessionSummary = () => {
-    const currentEndingDateTime =
-      pomoSessionData.cycleArray.length > 0 ? pomoSessionData.cycleArray[-1].cycleEnd : null;
-    return {
-      startingDateTime: pomoSessionData.startingDateTime,
-      numberOfCyclesCompleted: pomoSessionData.numberOfCyclesCompleted,
-      cycleArray: pomoSessionData.cycleArray,
-      expectedCycleArray: pomoSessionData.expectedCycleArray,
-      isRunning: pomoSessionData.isRunning,
-      endingDateTime: currentEndingDateTime
-    };
-  };
+    return [lastSessionData, newSession.sessionData];
+  }
 
-  const getPercentageOfCompletedTasksInCycle = (cycleIndex: number) => {
-    const actualCycleData = pomoSessionData.cycleArray[cycleIndex];
-    const expectedCycleData = pomoSessionData.expectedCycleArray[cycleIndex];
+  getSessionSummary(): [Date, number, CycleData[], CycleData[]] {
+    return [this.sessionData.startingDateTime, this.sessionData.numberOfCyclesCompleted, this.sessionData.cycleArray, this.sessionData.expectedCycleArray];
+  }
+
+  getPercentageOfCompletedTasksInCycle(cycleIndex: number): number {
+    const actualCycleData = this.sessionData.cycleArray[cycleIndex];
+    const expectedCycleData = this.sessionData.expectedCycleArray[cycleIndex];
 
     const numberOfExpectedTasks = expectedCycleData.tasks.length;
     const numberOfActualTasksCompleted = actualCycleData.tasks.filter((task) => {
@@ -122,16 +93,6 @@ export default function usePomoSession(defaultData = defaultPomoSessionData) {
     }).length;
     const roundedPercentage = Math.round((numberOfActualTasksCompleted / numberOfExpectedTasks) * 100);
     return roundedPercentage;
-  };
-
-  return {
-    pomoSessionData,
-    startSession,
-    cycleStart,
-    cycleModify,
-    endSession,
-    stopSession,
-    getSessionSummary,
-    getPercentageOfCompletedTasksInCycle
-  };
+  }
 }
+
