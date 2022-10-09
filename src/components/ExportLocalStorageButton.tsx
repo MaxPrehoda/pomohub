@@ -5,6 +5,7 @@ import { readPomoHubData } from '../App';
 function ExportLocalStorageButton() {
   const exportLocalStorage = () => {
     const pomoHubData = readPomoHubData();
+    console.log('READ', pomoHubData);
     const pomoHubDataString = JSON.stringify(pomoHubData);
     const blob = new Blob([pomoHubDataString], { type: 'application/json' });
     const url = URL.createObjectURL(blob);

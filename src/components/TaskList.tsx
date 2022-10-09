@@ -27,13 +27,26 @@ function TaskList() {
     setTodoList([newTask, ...todoList]);
     setTask(''); // clear inputs
     const currSession: SessionInterface = readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1];
-    const sessionHandler = new PomoSessionHandler(currSession);
-    const currCycle: CycleData = currSession.cycleArray[currSession.cycleArray.length - 1];
-    console.log(currSession)
-    currCycle.tasks = [newTask, ...currCycle.tasks];
-    sessionHandler.updateSession(currCycle);
-    // const updatedSession = sessionHandler.cycleModify(newTask);
-    // writeSessionToPomoHubData(updatedSession);
+
+    // if the current session has no cycles, create a new cycle with the new task
+    if (currSession.cycleArray.length === 0) {
+      const updatedSession = new PomoSessionHandler(currSession).cycleStart([newTask]);
+      writeSessionToPomoHubData(updatedSession);
+      console.log('ADDED NEW CYCLE, then NEW TASK', updatedSession);
+    } else {
+      // if the current session has cycles, add the new task to the latest cycle
+      // get latest cycle
+      const latestCycle = currSession.cycleArray[currSession.cycleArray.length - 1];
+      const updatedCycle = {
+        ...latestCycle,
+        tasks: [newTask, ...latestCycle.tasks]
+      };
+
+      const updatedSession = new PomoSessionHandler(currSession).updateExistingCycle(updatedCycle);
+      writeSessionToPomoHubData(updatedSession);
+      console.log('ADDED TASK TO EXISTING CYCLE', updatedSession);
+      console.log('LOCAL STORAGE', readPomoHubData());
+    }
   };
 
   const handleEnter = (task, event: KeyboardEvent): void => {

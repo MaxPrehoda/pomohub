@@ -84,7 +84,9 @@ export const writeSessionToPomoHubData = (session: SessionInterface) => {
   const pomoHubData = readPomoHubData();
   // check through all sessions to see if there is a session with the same date
   if (pomoHubData && pomoHubData.storedSessions && pomoHubData.storedSessions.length > 0) {
-    const sessionIndex = pomoHubData.storedSessions.findIndex((s: SessionInterface) => s.startingDateTime === session.startingDateTime);
+    const sessionIndex = pomoHubData.storedSessions.findIndex(
+      (s: SessionInterface) => s.startingDateTime === session.startingDateTime
+    );
     if (sessionIndex > -1) {
       pomoHubData.storedSessions[sessionIndex] = session;
     } else {

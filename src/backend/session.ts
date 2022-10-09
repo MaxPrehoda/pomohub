@@ -11,7 +11,7 @@ const defaultPomoSessionData: SessionInterface = {
 
 export default class PomoSessionHandler {
   sessionData: SessionInterface;
-  
+
   lastCycle: CycleData;
 
   constructor(sessionData: SessionInterface = defaultPomoSessionData) {
@@ -32,6 +32,11 @@ export default class PomoSessionHandler {
     return this.sessionData;
   }
 
+  updateExistingCycle(cycleContents: CycleData): SessionInterface {
+    this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1] = cycleContents;
+    return this.sessionData;
+  }
+
   cycleStart(savedTasks: Tasks[]): SessionInterface {
     const unfinishedTasks = savedTasks.filter((task) => task.taskState === 'incomplete');
     const currCycle: CycleData = {
@@ -46,7 +51,7 @@ export default class PomoSessionHandler {
   }
 
   // come back
-  cycleModify(currTask: Tasks): SessionInterface {
+  updateCycle(currTask: Tasks): SessionInterface {
     // initialize new timestamp & locate the current cycle in the cycle array
     if (this.sessionData.cycleArray.length !== 0) {
       throw new Error('cycleArray cannot be empty.');

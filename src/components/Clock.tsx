@@ -123,14 +123,6 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
   useEffect(() => {
     if (isTimerRunning && !isSessionStarted) {
       startSession();
-    } else if (isTimerRunning && isSessionStarted) {
-      const currSession = readPomoHubData().storedSessions[readPomoHubData().storedSessions.length-1];
-      const sessionHandler = new PomoSessionHandler(currSession);
-      console.log("There's a cycle in progress");
-      console.log(currSession)
-      const updatedSession = sessionHandler.cycleStart(currSession.cycleArray[currSession.cycleArray.length - 1].tasks);
-      writeSessionToPomoHubData(updatedSession);
-      console.log(updatedSession);
     }
     if (!(isTimerRunning && time > 0)) {
       checkIfUserEndedCycle();
