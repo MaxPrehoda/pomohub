@@ -26,9 +26,8 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
   const [isSessionStarted, setIsSessionStarted] = useState(false);
   const isBreak = false;
 
-  const startOrPauseTimer = () => {
-    // if this is the first time the timer has been started, create a new session
-    if (!isRunning && !isStarted) {
+  const startSession = () => {
+    if (!isTimerRunning && !isSessionStarted) {
         console.log('creating new session FIST LINE');
       const sessionsList = readPomoHubData().storedSessions;
       const currSession: SessionInterface = sessionsList[sessionsList.length - 1];
@@ -76,17 +75,17 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
         writeSessionToPomoHubData(updatedSession);
       }
     }
+}
 
-<<<<<<< HEAD
+  const startOrPauseTimer = () => {
+    // if this is the first time the timer has been started, create a new session
+    startSession()
+
     console.log(
       'Current session data is',
       readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1]
     );
-    setIsRunning(!isRunning);
-=======
-    console.log('Current session data is', readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1]);
     setIsTimerRunning(!isTimerRunning);
->>>>>>> 45d12a1a9bf73f0b740b3a63bee92bc20fa917ce
   };
 
   // dont touch
@@ -123,16 +122,7 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
 
   useEffect(() => {
     if (!(isTimerRunning && time > 0)) {
-      if (time === 0) {
-        setIsTimerRunning(false);
-        const currentLocalSessions = readPomoHubData().storedSessions;
-        const currSession: SessionInterface = currentLocalSessions[currentLocalSessions.length - 1];
-        const sessionHandler = new PomoSessionHandler(currSession);
-        const updatedSession = sessionHandler.cycleEnd();
-        writeSessionToPomoHubData(updatedSession);
-        ding.play(); // play 'done with cycle' sound notification
-        // ask user if they want to start a new cycle or end the current session
-      }
+      checkIfUserEndedCycle()
     } else {
       const interval = setInterval(() => {
         setTime(time - 1);
