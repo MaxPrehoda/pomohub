@@ -47,11 +47,12 @@ function Clock(
       console.log(currSession.cycleArray);
       console.log('Check before');
 
-      if (currSession.cycleArray !== []) {
-        const updatedSession = sessionHandler.cycleStart(currSession.cycleArray[-1].tasks);
+      if (currSession.cycleArray.length)  {
+        //if cycleArray is not empty
+        const updatedSession = sessionHandler.cycleStart(currSession.cycleArray[currSession.cycleArray.length-1].tasks);
         writeSessionToPomoHubData(updatedSession);
       } else if (readPomoHubData().storedSession.length >= 2) {
-        if (readPomoHubData().storedSessions[-2].cycleArray.length === 0) {
+        if (readPomoHubData().storedSessions[sessionsList.length-2].cycleArray.length === 0) {
           const updatedSession = sessionHandler.cycleStart([]);
           writeSessionToPomoHubData(updatedSession);
         } else {
