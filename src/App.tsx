@@ -42,6 +42,8 @@ const loadOrCreateConfig = (): ConfigInterface => {
 
 const loadOrCreatePomoHubData = () => {
   const pomoHubData = localStorage.getItem('PomoHubData');
+  // console.log('loadOrCreatePomoHubData WORKS ONLY ONCE');
+  // console.log(pomoHubData);
   if (pomoHubData) {
     if (
       Object.keys(pomoHubData).length === Object.keys(defaultPomoHubData).length &&
@@ -49,9 +51,12 @@ const loadOrCreatePomoHubData = () => {
     ) {
       return JSON.parse(pomoHubData);
     }
+  } else {
+    console.log('holy fuck does this happen every time');
+    // THIS IS A HUGE BUG
+    localStorage.setItem('PomoHubData', JSON.stringify(defaultPomoHubData));
+    return defaultPomoHubData;
   }
-  localStorage.setItem('PomoHubData', JSON.stringify(defaultPomoHubData));
-  return defaultPomoHubData;
 };
 
 export const readPomoHubData = () => {
@@ -74,9 +79,9 @@ export const readLocalConfig = () => {
   throw new Error('Config not found in localStorage');
 };
 
-export const writeUsernameToPomoHubData = (username: string) => {
+export const writeuserNameToPomoHubData = (userName: string) => {
   const pomoHubData = readPomoHubData();
-  pomoHubData.username = username;
+  pomoHubData.userName = userName;
   localStorage.setItem('PomoHubData', JSON.stringify(pomoHubData));
 };
 
@@ -99,8 +104,10 @@ export const writeSessionToPomoHubData = (session: SessionInterface) => {
 };
 
 const logPomoHubData = (pomoHubData: PomoHubLocalStorageInterface) => {
-  console.log('Username:', pomoHubData.username);
-  console.log('Stored Sessions:', pomoHubData.storedSessions);
+  console.log('PomoHubData:');
+  console.log(pomoHubData);
+  // console.log('userName:', pomoHubData.userName);
+  // console.log('Stored Sessions:', pomoHubData.storedSessions);
 };
 
 const logLocalConfigs = (config: ConfigInterface) => {

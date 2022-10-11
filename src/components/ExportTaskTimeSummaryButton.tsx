@@ -50,7 +50,7 @@ import { PomoHubLocalStorageInterface } from '../entities';
 // todayAt10AM.setHours(10, 0, 0, 0);
 
 // const mockPomoHubData: PomoHubLocalStorageInterface = {
-//   username: 'test',
+//   userName: 'test',
 //   storedSessions: [
 //     {
 //       startingDateTime: dayBeforeYesterday,
@@ -85,7 +85,7 @@ import { PomoHubLocalStorageInterface } from '../entities';
 // //   });
 
 // //   if (Object.keys(taskTimeSummary).length === 0) {
-// //     console.log('No task time summary to export');
+// //     //console.log('No task time summary to export');
 // //     return JSON.stringify([]);
 // //   }
 
