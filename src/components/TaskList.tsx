@@ -11,7 +11,7 @@ function TaskList() {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     if (event.target.name === 'task') {
-      console.log(event);
+      //console.log(event);
       setTask(event.target.value);
     }
   };
@@ -32,7 +32,7 @@ function TaskList() {
     if (currSession.cycleArray.length === 0) {
       const updatedSession = new PomoSessionHandler(currSession).cycleStart([newTask]);
       writeSessionToPomoHubData(updatedSession);
-      console.log('ADDED NEW CYCLE, then NEW TASK', updatedSession);
+      //console.log('ADDED NEW CYCLE, then NEW TASK', updatedSession);
     } else {
       // if the current session has cycles, add the new task to the latest cycle
       // get latest cycle
@@ -44,8 +44,8 @@ function TaskList() {
 
       const updatedSession = new PomoSessionHandler(currSession).updateExistingCycle(updatedCycle);
       writeSessionToPomoHubData(updatedSession);
-      console.log('ADDED TASK TO EXISTING CYCLE', updatedSession);
-      console.log('LOCAL STORAGE', readPomoHubData());
+      //console.log('ADDED TASK TO EXISTING CYCLE THIS WORKS', updatedSession);
+      //console.log('LOCAL STORAGE THIS WORKS', readPomoHubData());
     }
   };
 
@@ -57,7 +57,7 @@ function TaskList() {
 
   const completeTask = (taskIdToComplete: number): void => {
     // send task to storage
-    console.log(`Task completed: ${taskIdToComplete}`);
+    //console.log(`Task completed: ${taskIdToComplete}`);
     const taskIndex = todoList.findIndex((currTasks) => {
       return currTasks.taskId === taskIdToComplete;
     });
@@ -140,6 +140,7 @@ function TaskList() {
           );
         })}
       </div>
+      <div className=" h-60 w-[650px] backdrop-blur-lg absolute mt-[345px] -ml-10 pointer-events-none" />
     </div>
   );
 }

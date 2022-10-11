@@ -1,4 +1,5 @@
 export interface ConfigInterface {
+  userName: string;
   cycleDurationMinutes: number;
   stepDurationMinutes: number;
   maximumCycleDurationMinutes: number;
@@ -14,7 +15,7 @@ export interface SessionInterface {
   endingDateTime: Date | null;
 }
 export interface PomoHubLocalStorageInterface {
-  username: string;
+  userName: string;
   storedSessions: Array<SessionInterface>;
 }
 

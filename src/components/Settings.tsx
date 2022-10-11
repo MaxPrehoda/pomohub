@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { ConfigInterface } from '../entities';
 import ExportLocalStorageButton from './ExportLocalStorageButton';
 import ExportSessionButton from './ExportSessionButton';
 
-import { writeUsernameToPomoHubData, readPomoHubData, writeToLocalConfig, readLocalConfig } from '../App';
+import { writeuserNameToPomoHubData, readPomoHubData, writeToLocalConfig, readLocalConfig } from '../App';
+import RangeSlider from './RangeSlider';
 
 type Props = {
   settingsHandler2: () => void;
 };
 
 function SettingsModal({ settingsHandler2 }: Props) {
-  const [username, setUsername] = useState(readPomoHubData().username);
-  const handleUsernameChange = (event: any) => {
-    console.log(`Username changing from '${username}' to '${event.target.value}`);
-    setUsername(event.target.value);
-    writeUsernameToPomoHubData(username);
+  const [userName, setuserName] = useState(readPomoHubData().userName);
+  const handleuserNameChange = (event: any) => {
+    //console.log(`userName changing from '${userName}' to '${event.target.value}`);
+    setuserName(event.target.value);
+    writeuserNameToPomoHubData(userName);
   };
 
   const [cycleDurationMinutes, setCycleDurationMinutes] = useState(readLocalConfig().cycleDurationMinutes);
@@ -25,6 +26,8 @@ function SettingsModal({ settingsHandler2 }: Props) {
   const [isExpectedVsActualEnabled, setIsExpectedVsActualEnabled] = useState(
     readLocalConfig().isExpectedVsActualEnabled
   );
+
+  const [sliderParentVal, setsliderParentVal] = useState(10);
 
   const handleLocalConfigChange = (event: any) => {
     console.log(
@@ -85,31 +88,54 @@ function SettingsModal({ settingsHandler2 }: Props) {
   //   maximumCycleDurationMinutes
   // );
 
-  const usernameInput = (
+  const userNameInput = (
     <div className="flex flex-col">
-      <label htmlFor="username" className="text-sm font-medium text-gray-700">
-        Username
+      <label htmlFor="userName" className="text-sm font-medium text-gray-700">
+        userName
         <div className="mt-1">
           <input
             type="text"
-            name="username"
-            id="username"
+            name="userName"
+            id="userName"
             className="block  w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-            placeholder={username}
-            onChange={handleUsernameChange}
+            placeholder={userName}
+            onChange={handleuserNameChange}
           />
         </div>
       </label>
     </div>
   );
 
+  const sliderValueChanged = useCallback((val) => {
+    //console.log('NEW VALUE', val);
+    setsliderParentVal(val);
+    writeToLocalConfig({
+      stepDurationMinutes: val,
+      cycleDurationMinutes: readLocalConfig().cycleDurationMinutes,
+      maximumCycleDurationMinutes: readLocalConfig().maximumCycleDurationMinutes,
+      isExpectedVsActualEnabled: false
+    });
+    //console.log(readLocalConfig());
+  });
+
+  const sliderProps = useMemo(
+    () => ({
+      min: 0,
+      max: 100,
+      value: sliderParentVal,
+      step: 2,
+      onChange: (e) => sliderValueChanged(e)
+    }),
+    [sliderParentVal]
+  );
+
   return (
     <div className="z-20 fixed h-full w-full flex items-center justify-center transition-all pb-10">
       <div className="w-[700px] h-[650px] text-center bg-zinc-700 rounded-lg text-white">
         <div className="flex flex-col pl-[210px] pt-28 gap-8 w-[500px] font-semibold pt-10">
-          {usernameInput}
+          {userNameInput}
           <button
-            /*onClick={sessionHandler}*/
+            /* onClick={sessionHandler} */
             className="bg-emerald-500 hover:bg-emerald-400 text-white font-semibold py-2 px-4 rounded"
           >
             View session summary
@@ -120,8 +146,9 @@ function SettingsModal({ settingsHandler2 }: Props) {
           <div className="w-18">
             <ExportLocalStorageButton />
           </div>
-          Time chunk
-          <input type="range" min="1" max="60" step="5" className="w-18" />
+          <div>
+            <RangeSlider {...sliderProps} classes="additional-css-classes" />
+          </div>
           <button
             onClick={settingsHandler2}
             className="bg-red-400 hover:bg-red-300 text-white font-semibold py-2 px-4 rounded"

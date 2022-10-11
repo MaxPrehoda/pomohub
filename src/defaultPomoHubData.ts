@@ -12,7 +12,7 @@ const defaultSession: SessionInterface = {
 };
 
 const defaultPomoHubData: PomoHubLocalStorageInterface = {
-  username: 'PomoHub User',
+  userName: 'PomoHub User',
   storedSessions: [defaultSession]
 };
 
