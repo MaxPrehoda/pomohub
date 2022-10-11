@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 import PomoSessionHandler from '../backend/session';
 
-import { writeuserNameToPomoHubData, writeSessionToPomoHubData,readPomoHubData, writeToLocalConfig, readLocalConfig } from '../App';
+import {
+  writeuserNameToPomoHubData,
+  writeSessionToPomoHubData,
+  readPomoHubData,
+  writeToLocalConfig,
+  readLocalConfig
+} from '../App';
 
 import { ConfigInterface } from '../entities';
 
@@ -19,37 +25,37 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
   const maximumCycleDurationSeconds = readLocalConfig().maximumCycleDurationMinutes * 60;
 
   const ding = new Audio('../assets/Drop.mp3');
+  const dong = new Audio('../assets/Unlock.mp3');
 
   const [time, setTime] = useState(cycleDurationSeconds);
   const [isTimerRunning, setIsTimerRunning] = useState(false); // used for the start and pause functionality
-  // const [isBreak, setBreak] = useState(false);
+  const [isBreak, setBreak] = useState(false);
   const [isSessionStarted, setIsSessionStarted] = useState(false);
-  const isBreak = false;
 
   const startSession = () => {
-    //console.log('FIST LINE');
+    // console.log('FIST LINE');
     const sessionsList = readPomoHubData().storedSessions;
-    //console.log(sessionsList[sessionsList.length - 1]);
+    // console.log(sessionsList[sessionsList.length - 1]);
     const currSession = sessionsList[sessionsList.length - 1];
     const sessionHandler = new PomoSessionHandler(currSession);
-    //console.log(sessionHandler.lastCycle);
+    // console.log(sessionHandler.lastCycle);
     // if there is a session with cycles in progress, start a new cycle with the leftover tasks of the latest cycle
     if (currSession.cycleArray.length !== 0) {
-      //console.log("There's a cycle in progress");
-      //console.log(currSession);
+      // console.log("There's a cycle in progress");
+      // console.log(currSession);
       const updatedSession = sessionHandler.cycleStart(currSession.cycleArray[currSession.cycleArray.length - 1].tasks);
       writeSessionToPomoHubData(updatedSession);
-      //console.log(updatedSession);
+      // console.log(updatedSession);
 
       // if there are no cycles in the current session, check for a previous session
     } else if (readPomoHubData().storedSessions.length >= 2) {
-      //console.log('There are no cycles in the current session');
+      // console.log('There are no cycles in the current session');
       const currentLocalSessions = readPomoHubData().storedSessions;
       const previousSession = currentLocalSessions[currentLocalSessions.length - 2];
 
       // if there is a previous session, check if that session has cycles
       if (previousSession.cycleArray.length !== 0) {
-        //console.log('There are cycles in the previous session');
+        // console.log('There are cycles in the previous session');
         const previousSessionTasks = previousSession.cycleArray[previousSession.cycleArray.length - 1].tasks;
         const updatedSession = sessionHandler.cycleStart(previousSessionTasks);
         writeSessionToPomoHubData(updatedSession);
@@ -57,14 +63,14 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
         // in the edge case that the previous session has no cycles, but there is a session from two sessions ago,
         // check if that "two sessions ago" session has cycles
       } else if (currentLocalSessions[currentLocalSessions.length - 2].cycleArray.length !== 0) {
-        //console.log('There are no cycles in the previous session');
+        // console.log('There are no cycles in the previous session');
         const twoSessionsAgoSession = currentLocalSessions[currentLocalSessions.length - 2];
         const twoSessionsAgoSessionTasks =
           twoSessionsAgoSession.cycleArray[twoSessionsAgoSession.cycleArray.length - 1].tasks;
         const updatedSession = sessionHandler.cycleStart(twoSessionsAgoSessionTasks);
         writeSessionToPomoHubData(updatedSession);
       } else {
-        //console.log('There are no cycles in the previous session');
+        // console.log('There are no cycles in the previous session');
         // otherwise, start a new session with no tasks
         const updatedSession = sessionHandler.cycleStart([]);
         writeSessionToPomoHubData(updatedSession);
@@ -72,7 +78,7 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
 
       // if there are no previous sessions, start a new session with no tasks
     } else {
-      //console.log('There are no previous sessions');
+      // console.log('There are no previous sessions');
       const updatedSession = sessionHandler.cycleStart([]);
       writeSessionToPomoHubData(updatedSession);
     }
@@ -107,10 +113,15 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
   };
 
   const checkIfUserEndedCycle = () => {
-    //console.log(time);
+    // console.log(time);
     if (time <= 0) {
-      //console.log('--------- cycle ended');
-      ding.play();
+      console.log('--------- cycle ended');
+      setBreak(!isBreak);
+      if (!isBreak) {
+        ding.play();
+      } else {
+        dong.play();
+      }
       const currentLocalSessions = readPomoHubData().storedSessions;
       const currentSession = currentLocalSessions[currentLocalSessions.length - 1];
       const sessionHandler = new PomoSessionHandler(currentSession);
@@ -126,11 +137,11 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
     }
     if (!(isTimerRunning && time > 0)) {
       checkIfUserEndedCycle();
+      console.log(isBreak);
     } else {
       const interval = setInterval(() => {
         setTime(time - 1);
       }, 1000);
-      // might be here ;p
       return () => clearInterval(interval);
     }
   }, [isTimerRunning, time]);
@@ -140,6 +151,11 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
   return (
     <div className="h-[230px]">
       <div className="h-[300px] w-[500px] md:w-[375px] md:h-[200px] lg:w-[450px] lg:h-[230px] lg:mb-12 bg-zinc-700 rounded-md text-center">
+        {isBreak ? (
+          <div className="text-medium text-zinc-100">Break</div>
+        ) : (
+          <div className="text-medium text-zinc-100">Work session</div>
+        )}
         <h1 className=" pt-16 md:pt-2 text-9xl lg:text-9xl font-semibold text-white pt-8">{displayTime}</h1>
         <div className="flex-row mt-3">
           <button

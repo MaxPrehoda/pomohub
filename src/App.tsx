@@ -52,8 +52,8 @@ const loadOrCreatePomoHubData = () => {
       return JSON.parse(pomoHubData);
     }
   } else {
-    console.log('holy fuck does this happen every time');
-    // THIS IS A HUGE BUG
+    console.log(`PomoHubData not found in localStorage, using default PomoHubData`);
+    // THIS WAS A HUGE BUG
     localStorage.setItem('PomoHubData', JSON.stringify(defaultPomoHubData));
     return defaultPomoHubData;
   }
@@ -121,6 +121,7 @@ function App() {
 
   const showLogs = true;
   if (showLogs) {
+    console.log(pomoHubData, 'pomoHubData');
     logPomoHubData(pomoHubData);
     logLocalConfigs(config);
   }

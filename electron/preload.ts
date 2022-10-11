@@ -15,9 +15,6 @@ const api = {
    *
    * The function below can accessed using `window.Main.sayHello`
    */
-  sendMessage: (message: string) => {
-    ipcRenderer.send('message', message);
-  },
   /**
     Here function for AppBar
    */
