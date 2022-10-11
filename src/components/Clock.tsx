@@ -4,7 +4,7 @@ import PomoSessionHandler from '../backend/session';
 
 import { writeSessionToPomoHubData, readPomoHubData } from '../App';
 
-import { ConfigInterface, Tasks, CycleData, PomoHubLocalStorageInterface, SessionInterface } from '../entities';
+import { ConfigInterface } from '../entities';
 
 function formatDisplayTime(time: number) {
   const minutes = Math.floor(time / 60);

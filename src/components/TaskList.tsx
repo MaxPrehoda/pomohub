@@ -1,7 +1,7 @@
 import { KeyboardEvent } from 'electron';
-import React, { useEffect, ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import Task from './Task';
-import { CycleData, SessionInterface, Tasks } from '../entities';
+import { SessionInterface, Tasks } from '../entities';
 import { writeSessionToPomoHubData, readPomoHubData } from '../App';
 import PomoSessionHandler from '../backend/session';
 
