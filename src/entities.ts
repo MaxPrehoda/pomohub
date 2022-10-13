@@ -1,6 +1,7 @@
 export interface ConfigInterface {
   userName: string;
   cycleDurationMinutes: number;
+  breakCycleDurationMinutes: number;
   stepDurationMinutes: number;
   maximumCycleDurationMinutes: number;
   isExpectedVsActualEnabled: boolean;

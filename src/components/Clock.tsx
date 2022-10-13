@@ -20,6 +20,7 @@ function formatDisplayTime(time: number) {
 }
 
 function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDurationMinutes }: ConfigInterface) {
+  const breakCycleDurationSeconds = readLocalConfig().breakCycleDurationMinutes * 60;
   const cycleDurationSeconds = readLocalConfig().cycleDurationMinutes * 60;
   const stepDurationSeconds = readLocalConfig().stepDurationMinutes * 60;
   const maximumCycleDurationSeconds = readLocalConfig().maximumCycleDurationMinutes * 60;
@@ -127,7 +128,13 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
       const sessionHandler = new PomoSessionHandler(currentSession);
       const updatedSession = sessionHandler.cycleEnd();
       writeSessionToPomoHubData(updatedSession);
-      setTime(cycleDurationSeconds);
+      console.log(cycleDurationSeconds);
+      console.log(breakCycleDurationSeconds);
+      if (isBreak) {
+        setTime(cycleDurationSeconds);
+      } else {
+        setTime(breakCycleDurationSeconds);
+      }
     }
   };
 

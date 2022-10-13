@@ -24,8 +24,7 @@ function RangeSlider({ classes, label, onChange, value, ...sliderProps }) {
 
   return (
     <div className="range-slider">
-      <p>{label}</p>
-      <h3>Step Duration Minutes: {sliderVal}</h3>
+      <h3>{label} : {sliderVal}</h3>
       <input
         type="range"
         value={sliderVal}

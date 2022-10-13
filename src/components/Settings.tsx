@@ -13,12 +13,15 @@ type Props = {
 function SettingsModal({ settingsHandler2 }: Props) {
   const [userName, setuserName] = useState(readPomoHubData().userName);
   const handleuserNameChange = (event: any) => {
-    //console.log(`userName changing from '${userName}' to '${event.target.value}`);
+    // console.log(`userName changing from '${userName}' to '${event.target.value}`);
     setuserName(event.target.value);
     writeuserNameToPomoHubData(userName);
   };
 
   const [cycleDurationMinutes, setCycleDurationMinutes] = useState(readLocalConfig().cycleDurationMinutes);
+  const [breakCycleDurationMinutes, setBreakCycleDurationMinutes] = useState(
+    readLocalConfig().breakCycleDurationMinutes
+  );
   const [stepDurationMinutes, setStepDurationMinutes] = useState(readLocalConfig().stepDurationMinutes);
   const [maximumCycleDurationMinutes, setMaximumCycleDurationMinutes] = useState(
     readLocalConfig().maximumCycleDurationMinutes
@@ -28,6 +31,8 @@ function SettingsModal({ settingsHandler2 }: Props) {
   );
 
   const [sliderParentVal, setsliderParentVal] = useState(10);
+  const [breakSliderParentVal, setbreakSliderParentVal] = useState(5);
+  const [workSliderParentVal, setWorkSliderParentVal] = useState(25);
 
   const handleLocalConfigChange = (event: any) => {
     console.log(
@@ -41,6 +46,13 @@ function SettingsModal({ settingsHandler2 }: Props) {
         } else {
           throw new Error('cycleDurationMinutes must be a number');
         }
+      case 'breakCycleDurationMinutes':
+        if (Number.isInteger(event.target.value)) {
+          setBreakCycleDurationMinutes(event.target.value);
+        } else {
+          console.log('breakCycleDurationMinutes must be a number');
+        }
+        break;
       case 'stepDurationMinutes':
         if (Number.isInteger(event.target.value)) {
           setStepDurationMinutes(event.target.value);
@@ -59,10 +71,12 @@ function SettingsModal({ settingsHandler2 }: Props) {
         break;
     }
     const newConfig: ConfigInterface = {
+      breakCycleDurationMinutes,
       cycleDurationMinutes,
       stepDurationMinutes,
       maximumCycleDurationMinutes,
-      isExpectedVsActualEnabled
+      isExpectedVsActualEnabled,
+      userName: ''
     };
 
     writeToLocalConfig(newConfig);
@@ -106,33 +120,82 @@ function SettingsModal({ settingsHandler2 }: Props) {
     </div>
   );
 
-  const sliderValueChanged = useCallback((val) => {
-    //console.log('NEW VALUE', val);
-    setsliderParentVal(val);
-    writeToLocalConfig({
-      stepDurationMinutes: val,
-      cycleDurationMinutes: readLocalConfig().cycleDurationMinutes,
-      maximumCycleDurationMinutes: readLocalConfig().maximumCycleDurationMinutes,
-      isExpectedVsActualEnabled: false
-    });
-    //console.log(readLocalConfig());
+  const sliderValueChanged = useCallback((val,text) => {
+    console.log(`sliderValueChanged: ${val} ${text}`);
+    if (text === 'Step Duration (minutes)') {
+      console.log('NEW VALUE', val);
+      setsliderParentVal(val);
+      writeToLocalConfig({
+        stepDurationMinutes: val,
+        cycleDurationMinutes: readLocalConfig().cycleDurationMinutes,
+        maximumCycleDurationMinutes: readLocalConfig().maximumCycleDurationMinutes,
+        isExpectedVsActualEnabled: false,
+        userName: '',
+        breakCycleDurationMinutes: 0
+      });
+    } else if (text === 'Break Session Duration (minutes)') {
+      setbreakSliderParentVal(val);
+      writeToLocalConfig({
+        breakCycleDurationMinutes: val,
+        cycleDurationMinutes: readLocalConfig().cycleDurationMinutes,
+        maximumCycleDurationMinutes: readLocalConfig().maximumCycleDurationMinutes,
+        isExpectedVsActualEnabled: false,
+        stepDurationMinutes: readLocalConfig().stepDurationMinutes,
+        userName: ''
+      }); // console.log(readLocalConfig());
+    } else if (text === 'Work Session Duration (minutes)') {
+      setWorkSliderParentVal(val);
+      writeToLocalConfig({
+        breakCycleDurationMinutes: readLocalConfig().breakCycleDurationMinutes,
+        cycleDurationMinutes: val,
+        maximumCycleDurationMinutes: readLocalConfig().maximumCycleDurationMinutes,
+        isExpectedVsActualEnabled: false,
+        stepDurationMinutes: readLocalConfig().stepDurationMinutes,
+        userName: ''
+      });
+    }
   });
 
   const sliderProps = useMemo(
     () => ({
       min: 0,
       max: 100,
+      label: 'Step Duration (minutes)',
       value: sliderParentVal,
-      step: 2,
-      onChange: (e) => sliderValueChanged(e)
+      step: 1,
+      onChange: (e) => sliderValueChanged(e,'Step Duration (minutes)')
     }),
     [sliderParentVal]
+  );
+
+  const breakSliderProps = useMemo(
+    () => ({
+      min: 0,
+      max: 100,
+      label: 'Break Session Duration (minutes)',
+      value: breakSliderParentVal,
+      step: 1,
+      onChange: (e) => sliderValueChanged(e, 'Break Session Duration (minutes)')
+    }),
+    [breakSliderParentVal]
+  );
+
+  const workSliderProps = useMemo(
+    () => ({
+      min: 0,
+      max: 100,
+      label: 'Work Session Duration (minutes)',
+      value: workSliderParentVal,
+      step: 1,
+      onChange: (e) => sliderValueChanged(e, 'Work Session Duration (minutes)')
+    }),
+    [workSliderParentVal]
   );
 
   return (
     <div className="z-20 fixed h-full w-full flex items-center justify-center transition-all pb-10">
       <div className="w-[700px] h-[650px] text-center bg-zinc-700 rounded-lg text-white">
-        <div className="flex flex-col pl-[210px] pt-28 gap-8 w-[500px] font-semibold pt-10">
+        <div className="flex flex-col pl-[210px] gap-8 w-[500px] font-semibold">
           {userNameInput}
           <button
             /* onClick={sessionHandler} */
@@ -146,8 +209,13 @@ function SettingsModal({ settingsHandler2 }: Props) {
           <div className="w-18">
             <ExportLocalStorageButton />
           </div>
+          <div />
+          <RangeSlider {...sliderProps} classes="additional-css-classes" />
           <div>
-            <RangeSlider {...sliderProps} classes="additional-css-classes" />
+            <RangeSlider {...workSliderProps} classes="additional-css-classes" />
+          </div>
+          <div>
+            <RangeSlider {...breakSliderProps} classes="additional-css-classes" />
           </div>
           <button
             onClick={settingsHandler2}
