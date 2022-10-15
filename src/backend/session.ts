@@ -26,11 +26,17 @@ export default class PomoSessionHandler {
   }
 
   cycleEnd(): SessionInterface {
-    //console.log('cycle end');
-    //console.log(this.lastCycle)
-    //console.log(this.sessionData);
-    //console.log(this.sessionData.cycleArray);
     this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleEnd = new Date();
+    const currentCycleEndTime = this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleEnd;
+    if (currentCycleEndTime === null) {
+      throw new Error('currentCycleEndTime cannot be null.');
+    }
+    const currentCycleStartTime = this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleStart;
+    if (currentCycleStartTime === null) {
+      throw new Error('currentCycleStartTime cannot be null.');
+    }
+    const cycleDuration = currentCycleEndTime.getTime() - currentCycleStartTime.getTime();
+    this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleSecDur = cycleDuration / 1000;
     return this.sessionData;
   }
 

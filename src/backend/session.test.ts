@@ -26,4 +26,15 @@ describe('PomoSessionHandler', () => {
     const cycleData = newSession.cycleStart(mockTasks);
     expect(cycleData.cycleArray.length).toBe(1);
   });
+
+  it('should be able to end a cycle, which should calculate the cycle duration in seconds', () => {
+    const newSession = new PomoSessionHandler();
+    const mockNumberOfSeconds = 60;
+    newSession.startSession();
+    newSession.cycleStart([]);
+    jest.useFakeTimers();
+    jest.advanceTimersByTime(mockNumberOfSeconds * 1000);
+    const sessionData = newSession.cycleEnd();
+    expect(sessionData.cycleArray[sessionData.cycleArray.length - 1].cycleSecDur).toBe(mockNumberOfSeconds);
+  });
 });
