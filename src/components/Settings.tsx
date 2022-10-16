@@ -194,35 +194,43 @@ function SettingsModal({ settingsHandler2 }: Props) {
 
   return (
     <div className="z-20 fixed h-full w-full flex items-center justify-center transition-all pb-10">
-      <div className="w-[700px] h-[650px] text-center bg-zinc-700 rounded-lg text-white">
-        <div className="flex flex-col pl-[210px] gap-8 w-[500px] font-semibold">
-          {userNameInput}
+      <div className="w-[750px] h-[650px] text-center bg-zinc-700 rounded-lg text-white">
+        <div className="flex flex-col pl-[110px] gap-8 w-[500px] pt-24 font-semibold">
+          <div className="flex flex-row w-[700px]">
+            <div className="flex-col w-26 gap-4 space-y-10">
+              {userNameInput}
+              <button
+                /* onClick={sessionHandler} */
+                className="bg-emerald-500 hover:bg-emerald-400 text-white font-semibold py-2 px-4 rounded"
+              >
+                View session summary
+              </button>
+              <div className="w-18">
+                <ExportSessionButton />
+              </div>
+              <div className="w-18">
+                <ExportLocalStorageButton />
+              </div>
+            </div>
+            <div />
+            <div className="flex-col w-26 gap-4 space-y-10 ml-20 mt-12">
+              <div>
+                <RangeSlider {...sliderProps} classes="additional-css-classes" />
+              </div>
+              <div>
+                <RangeSlider {...workSliderProps} classes="additional-css-classes" />
+              </div>
+              <div>
+                <RangeSlider {...breakSliderProps} classes="additional-css-classes" />
+              </div>
+            </div>
+          </div>
           <button
-            /* onClick={sessionHandler} */
-            className="bg-emerald-500 hover:bg-emerald-400 text-white font-semibold py-2 px-4 rounded"
-          >
-            View session summary
-          </button>
-          <div className="w-18">
-            <ExportSessionButton />
-          </div>
-          <div className="w-18">
-            <ExportLocalStorageButton />
-          </div>
-          <div />
-          <RangeSlider {...sliderProps} classes="additional-css-classes" />
-          <div>
-            <RangeSlider {...workSliderProps} classes="additional-css-classes" />
-          </div>
-          <div>
-            <RangeSlider {...breakSliderProps} classes="additional-css-classes" />
-          </div>
-          <button
-            onClick={settingsHandler2}
-            className="bg-red-400 hover:bg-red-300 text-white font-semibold py-2 px-4 rounded"
-          >
-            Close Settings
-          </button>
+                onClick={settingsHandler2}
+                className="bg-red-400 hover:bg-red-300 text-white font-semibold py-2 px-4 rounded ml-[200px] mt-8"
+              >
+                Close Settings
+              </button>
         </div>
       </div>
     </div>

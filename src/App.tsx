@@ -70,7 +70,7 @@ function App() {
 
   const showLogs = true;
   if (showLogs) {
-    console.log('this log doesnt work, never resets the state to new data');
+    console.log('this log doesnt work, never reset the state to new data');
   }
   const clock = Clock(config);
 
@@ -91,7 +91,7 @@ function App() {
       )}
       <div className="flex-auto overflow-hidden">
         {showModal ? <SettingsModal settingsHandler2={handleSettingsModal} /> : <div />}
-        <div className=" flex flex-col justify-center items-center h-full bg-zinc-900 space-y-4 pt-44 pb-80 md:pb-0">
+        <div className=" flex flex-col justify-center items-center h-full bg-zinc-900 space-y-4 pt-44 pb-80 md:pb-0 overflow-hidden">
           {clock}
           <span className="hidden md:block md:pt-0 pb-20">
             <TaskList />
