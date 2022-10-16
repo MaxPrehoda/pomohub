@@ -140,7 +140,7 @@ function TaskList() {
           );
         })}
       </div>
-      <div className=" h-60 w-[650px] backdrop-blur-lg absolute mt-[345px] -ml-10 pointer-events-none" />
+      <div className=" h-60 w-[650px] backdrop-blur-lg fixed mt-[345px] -ml-10 pointer-events-none overflow-y-clip" />
     </div>
   );
 }
