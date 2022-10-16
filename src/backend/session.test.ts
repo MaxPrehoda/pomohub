@@ -1,5 +1,7 @@
 import PomoSessionHandler from './session';
 
+import { mockOneTask, mockTwoTasks } from './session.mocks';
+
 describe('PomoSessionHandler', () => {
   it('should be able to create a new session', () => {
     const newSession = new PomoSessionHandler();
@@ -15,15 +17,7 @@ describe('PomoSessionHandler', () => {
   it('should be able to add a new cycle to a session', () => {
     const newSession = new PomoSessionHandler();
     newSession.startSession();
-    const mockTasks = [
-      {
-        taskName: 'mock task 1',
-        taskId: 1,
-        taskState: 'incomplete',
-        dateChanged: new Date()
-      }
-    ];
-    const cycleData = newSession.cycleStart(mockTasks);
+    const cycleData = newSession.cycleStart(mockOneTask);
     expect(cycleData.cycleArray.length).toBe(1);
   });
 
@@ -47,37 +41,11 @@ describe('PomoSessionHandler', () => {
   it('should reflect all tasks that have been added during the cycle', () => {
     const newSession = new PomoSessionHandler();
     newSession.startSession();
-    const mockTasks = [
-      {
-        taskName: 'mock task 1',
-        taskId: 1,
-        taskState: 'incomplete',
-        dateChanged: new Date()
-      },
-      {
-        taskName: 'mock task 2',
-        taskId: 2,
-        taskState: 'incomplete',
-        dateChanged: new Date()
-      }
-    ];
-    newSession.cycleStart(mockTasks);
-    const mockTasks2 = [
-      {
-        taskName: 'mock task 1',
-        taskId: 1,
-        taskState: 'incomplete',
-        dateChanged: new Date()
-      },
-      {
-        taskName: 'mock task 2',
-        taskId: 2,
-        taskState: 'incomplete',
-        dateChanged: new Date()
-      }
-    ];
+
+    newSession.cycleStart(mockTwoTasks);
+
     const sessionData = newSession.updateExistingCycle({
-      tasks: mockTasks2,
+      tasks: mockTwoTasks,
       cycleStart: new Date(),
       cycleEnd: null,
       cycleSecDur: null
@@ -89,15 +57,7 @@ describe('PomoSessionHandler', () => {
   it('should be able to mark a task as deleted', () => {
     const newSession = new PomoSessionHandler();
     newSession.startSession();
-    const mockTasks = [
-      {
-        taskName: 'mock task 1',
-        taskId: 1,
-        taskState: 'incomplete',
-        dateChanged: new Date()
-      }
-    ];
-    newSession.cycleStart(mockTasks);
+    newSession.cycleStart(mockOneTask);
     newSession.updateTaskStatusInCurrentCycle(1, 'deleted');
     const sessionData = newSession.cycleEnd();
     expect(sessionData.cycleArray[sessionData.cycleArray.length - 1].tasks[0].taskState).toBe('deleted');
@@ -106,15 +66,7 @@ describe('PomoSessionHandler', () => {
   it('should be able to mark a task as complete', () => {
     const newSession = new PomoSessionHandler();
     newSession.startSession();
-    const mockTasks = [
-      {
-        taskName: 'mock task 1',
-        taskId: 1,
-        taskState: 'incomplete',
-        dateChanged: new Date()
-      }
-    ];
-    newSession.cycleStart(mockTasks);
+    newSession.cycleStart(mockTwoTasks);
     newSession.updateTaskStatusInCurrentCycle(1, 'complete');
     const sessionData = newSession.cycleEnd();
     expect(sessionData.cycleArray[sessionData.cycleArray.length - 1].tasks[0].taskState).toBe('complete');
