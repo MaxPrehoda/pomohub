@@ -3,8 +3,8 @@ import { Tasks } from '../entities';
 
 interface Props {
   task: Tasks;
-  deleteTask(taskIdToDelete: string): void;
-  completeTask(taskIdToDelete: string): void;
+  deleteTask(taskIdToDelete: number): void;
+  completeTask(taskIdToDelete: number): void;
 }
 
 function Task({ task, deleteTask, completeTask }: Props) {

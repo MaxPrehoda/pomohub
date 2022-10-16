@@ -23,9 +23,11 @@ export interface PomoHubLocalStorageInterface {
 export interface Tasks {
   taskName: string;
   taskId: number;
-  taskState: string;
+  taskState: TaskState;
   dateChanged: Date;
 }
+
+export type TaskState = 'incomplete' | 'complete' | 'deleted' | 'not started';
 
 export interface CycleData {
   tasks: Array<Tasks>;

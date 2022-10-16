@@ -18,7 +18,7 @@ function TaskList() {
 
   const addTask = (): void => {
     const currDate = new Date();
-    const newTask = {
+    const newTask: Tasks = {
       taskName: task,
       taskId: Math.floor(Math.random() * 199000),
       taskState: 'incomplete',
@@ -49,11 +49,18 @@ function TaskList() {
     }
   };
 
-  const handleEnter = (task, event: KeyboardEvent): void => {
-    if (event.target.name === 'task' && event.key === 'Enter') {
-      addTask(task);
+
+  // if the user presses the Enter key, add the task
+  const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (event.key === 'Enter') {
+      addTask();
     }
   };
+  // const handleEnter = (event: KeyboardEvent): void => {
+  //   if (event.target.name === 'task' && event.key === 'Enter') {
+  //     addTask();
+  //   }
+  // };
 
   const completeTask = (taskIdToComplete: number): void => {
     const taskIndex = todoList.findIndex((currTasks) => {

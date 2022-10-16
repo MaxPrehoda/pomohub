@@ -1,4 +1,4 @@
-import { Tasks, SessionInterface, CycleData } from '../entities';
+import { Tasks, SessionInterface, CycleData, TaskState } from '../entities';
 
 const defaultPomoSessionData: SessionInterface = {
   startingDateTime: new Date(),
@@ -52,7 +52,7 @@ export default class PomoSessionHandler {
     return this.sessionData;
   }
 
-  updateTaskStatusInCurrentCycle(taskId: number, taskState: string): SessionInterface {
+  updateTaskStatusInCurrentCycle(taskId: number, taskState: TaskState): SessionInterface {
     const currentCycle = this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1];
     const taskIndex = currentCycle.tasks.findIndex((task) => task.taskId === taskId);
     if (taskIndex === -1) {
