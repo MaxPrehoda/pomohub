@@ -68,6 +68,7 @@ function TaskList() {
     const currSession: SessionInterface = readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1];
 
     const sessionHandler = new PomoSessionHandler(currSession);
+    addToDoTaskToSessionIfMissing(taskIdToComplete, sessionHandler);
     const updatedSession = sessionHandler.updateTaskStatusInCurrentCycle(taskIdToComplete, 'complete');
 
     writeSessionToPomoHubData(updatedSession);
@@ -77,6 +78,7 @@ function TaskList() {
     const currSession: SessionInterface = readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1];
 
     const sessionHandler = new PomoSessionHandler(currSession);
+    addToDoTaskToSessionIfMissing(taskIdToDelete, sessionHandler);
     const updatedSession = sessionHandler.updateTaskStatusInCurrentCycle(taskIdToDelete, 'deleted');
     writeSessionToPomoHubData(updatedSession);
 
@@ -139,6 +141,22 @@ function TaskList() {
       <div className=" h-60 w-[650px] backdrop-blur-lg absolute mt-[345px] -ml-10 pointer-events-none" />
     </div>
   );
+
+  function addToDoTaskToSessionIfMissing(taskIdToDelete: number, sessionHandler: PomoSessionHandler) {
+    const taskToDelete = todoList.find((currTask) => {
+      return currTask.taskId === taskIdToDelete;
+    });
+    if (taskToDelete === undefined) {
+      throw new Error('Task to delete not found in todoList');
+    }
+    const taskToDeleteIsInCurrentCycle = sessionHandler.getTasksInCurrentCycle().find((currTasks) => {
+      return currTasks.taskId === taskIdToDelete;
+    });
+    if (!taskToDeleteIsInCurrentCycle) {
+      const updatedSession = sessionHandler.addTaskToCurrentCycle(taskToDelete);
+      writeSessionToPomoHubData(updatedSession);
+    }
+  }
 }
 
 export default TaskList;
