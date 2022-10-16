@@ -16,7 +16,7 @@ function TaskList() {
     }
   };
 
-  const addTask = (): void => {
+  const addTask = (newTaskToAdd: Tasks): void => {
     const currDate = new Date();
     const newTask: Tasks = {
       taskName: task,
@@ -49,18 +49,11 @@ function TaskList() {
     }
   };
 
-
-  // if the user presses the Enter key, add the task
-  const handleEnter = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (event.key === 'Enter') {
-      addTask();
+  const handleEnter = (task: Tasks, event: KeyboardEvent): void => {
+    if (event.target.name === 'task' && event.key === 'Enter') {
+      addTask(task);
     }
   };
-  // const handleEnter = (event: KeyboardEvent): void => {
-  //   if (event.target.name === 'task' && event.key === 'Enter') {
-  //     addTask();
-  //   }
-  // };
 
   const completeTask = (taskIdToComplete: number): void => {
     const taskIndex = todoList.findIndex((currTasks) => {
@@ -76,7 +69,7 @@ function TaskList() {
     const currSession: SessionInterface = readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1];
 
     const sessionHandler = new PomoSessionHandler(currSession);
-    const updatedSession = sessionHandler.updateTaskStatusInCurrentCycle(taskIdToComplete, 'completed');
+    const updatedSession = sessionHandler.updateTaskStatusInCurrentCycle(taskIdToComplete, 'complete');
 
     writeSessionToPomoHubData(updatedSession);
   };
