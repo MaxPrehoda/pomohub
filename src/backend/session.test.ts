@@ -37,4 +37,46 @@ describe('PomoSessionHandler', () => {
     const sessionData = newSession.cycleEnd();
     expect(sessionData.cycleArray[sessionData.cycleArray.length - 1].cycleSecDur).toBe(mockNumberOfSeconds);
   });
+
+  it('should reflect all tasks that have been added during the cycle', () => {
+    const newSession = new PomoSessionHandler();
+    newSession.startSession();
+    const mockTasks = [
+      {
+        taskName: 'mock task 1',
+        taskId: 1,
+        taskState: 'incomplete',
+        dateChanged: new Date()
+      },
+      {
+        taskName: 'mock task 2',
+        taskId: 2,
+        taskState: 'incomplete',
+        dateChanged: new Date()
+      }
+    ];
+    newSession.cycleStart(mockTasks);
+    const mockTasks2 = [
+      {
+        taskName: 'mock task 1',
+        taskId: 1,
+        taskState: 'incomplete',
+        dateChanged: new Date()
+      },
+      {
+        taskName: 'mock task 2',
+        taskId: 2,
+        taskState: 'incomplete',
+        dateChanged: new Date()
+      }
+    ];
+    const sessionData = newSession.updateExistingCycle({
+      tasks: mockTasks2,
+      cycleStart: new Date(),
+      cycleEnd: null,
+      cycleSecDur: null
+    });
+    expect(sessionData.cycleArray.length === 1);
+    expect(sessionData.cycleArray[sessionData.cycleArray.length - 1].tasks.length).toBe(2);
+  });
 });

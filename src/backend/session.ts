@@ -26,23 +26,43 @@ export default class PomoSessionHandler {
   }
 
   cycleEnd(): SessionInterface {
-    this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleEnd = new Date();
-    const currentCycleEndTime = this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleEnd;
-    if (currentCycleEndTime === null) {
-      throw new Error('currentCycleEndTime cannot be null.');
+    this.forceDateTimesToBeDateTimes();
+    const currDate = new Date();
+    const currCycle = this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1];
+    if (currCycle.cycleStart === null) {
+      throw new Error('cycleStart cannot be null.');
     }
-    const currentCycleStartTime = this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleStart;
-    if (currentCycleStartTime === null) {
-      throw new Error('currentCycleStartTime cannot be null.');
+    const cycleDurationSeconds = (currDate.getTime() - currCycle.cycleStart.getTime()) / 1000;
+    const originalCycleStart = currCycle.cycleStart;
+    if (typeof originalCycleStart === 'string') {
+      throw new Error('cycleStart cannot be a string.');
     }
-    const cycleDuration = currentCycleEndTime.getTime() - currentCycleStartTime.getTime();
-    this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleSecDur = cycleDuration / 1000;
+    const updatedCycle: CycleData = {
+      tasks: currCycle.tasks,
+      cycleStart: currCycle.cycleStart,
+      cycleEnd: currDate,
+      cycleSecDur: cycleDurationSeconds
+    };
+    this.updateExistingCycle(updatedCycle);
     return this.sessionData;
   }
 
   updateExistingCycle(cycleContents: CycleData): SessionInterface {
     this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1] = cycleContents;
     return this.sessionData;
+  }
+
+  private forceDateTimesToBeDateTimes() {
+    this.sessionData.cycleArray.forEach((cycle) => {
+      if (cycle.cycleStart !== null && !(cycle.cycleStart instanceof Date)) {
+        // eslint-disable-next-line no-param-reassign
+        cycle.cycleStart = new Date(cycle.cycleStart);
+      }
+      if (cycle.cycleEnd !== null && !(cycle.cycleEnd instanceof Date)) {
+        // eslint-disable-next-line no-param-reassign
+        cycle.cycleEnd = new Date(cycle.cycleEnd);
+      }
+    });
   }
 
   cycleStart(savedTasks: Tasks[]): SessionInterface {
@@ -92,7 +112,6 @@ export default class PomoSessionHandler {
 
   endSession(nextCycle: CycleData): [SessionInterface, SessionInterface] {
     this.sessionData.numberOfCyclesCompleted += 1;
-    this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].cycleEnd = new Date();
 
     const lastSessionData = this.sessionData;
     const newSession = new PomoSessionHandler();
@@ -107,7 +126,6 @@ export default class PomoSessionHandler {
       ...remainingTasks,
       ...missingTasks
     ];
-
     return [lastSessionData, newSession.sessionData];
   }
 
