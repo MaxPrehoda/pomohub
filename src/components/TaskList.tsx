@@ -56,8 +56,6 @@ function TaskList() {
   };
 
   const completeTask = (taskIdToComplete: number): void => {
-    // send task to storage
-    //console.log(`Task completed: ${taskIdToComplete}`);
     const taskIndex = todoList.findIndex((currTasks) => {
       return currTasks.taskId === taskIdToComplete;
     });
@@ -68,10 +66,11 @@ function TaskList() {
         return tasks.taskId !== taskIdToComplete;
       })
     );
-    const currSession: SessionInterface = readPomoHubData().storedSessions[-1];
+    const currSession: SessionInterface = readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1];
+
     const sessionHandler = new PomoSessionHandler(currSession);
-    const finishedTask = todoList.filter((tasks) => tasks.taskId === taskIdToComplete);
-    const updatedSession = sessionHandler.cycleModify(finishedTask[0]);
+    const updatedSession = sessionHandler.updateTaskStatusInCurrentCycle(taskIdToComplete, 'completed');
+
     writeSessionToPomoHubData(updatedSession);
   };
 
@@ -79,7 +78,7 @@ function TaskList() {
     const currSession: SessionInterface = readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1];
 
     const sessionHandler = new PomoSessionHandler(currSession);
-    const updatedSession = sessionHandler.markTaskInCurrentCycleAsDeleted(taskIdToDelete);
+    const updatedSession = sessionHandler.updateTaskStatusInCurrentCycle(taskIdToDelete, 'deleted');
     writeSessionToPomoHubData(updatedSession);
 
     setTodoList(

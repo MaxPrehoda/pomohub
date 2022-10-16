@@ -98,8 +98,25 @@ describe('PomoSessionHandler', () => {
       }
     ];
     newSession.cycleStart(mockTasks);
-    newSession.markTaskInCurrentCycleAsDeleted(1);
+    newSession.updateTaskStatusInCurrentCycle(1, 'deleted');
     const sessionData = newSession.cycleEnd();
     expect(sessionData.cycleArray[sessionData.cycleArray.length - 1].tasks[0].taskState).toBe('deleted');
+  });
+
+  it('should be able to mark a task as complete', () => {
+    const newSession = new PomoSessionHandler();
+    newSession.startSession();
+    const mockTasks = [
+      {
+        taskName: 'mock task 1',
+        taskId: 1,
+        taskState: 'incomplete',
+        dateChanged: new Date()
+      }
+    ];
+    newSession.cycleStart(mockTasks);
+    newSession.updateTaskStatusInCurrentCycle(1, 'complete');
+    const sessionData = newSession.cycleEnd();
+    expect(sessionData.cycleArray[sessionData.cycleArray.length - 1].tasks[0].taskState).toBe('complete');
   });
 });
