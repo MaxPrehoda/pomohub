@@ -35,7 +35,13 @@ describe('PomoSessionHandler', () => {
     jest.useFakeTimers();
     jest.advanceTimersByTime(mockNumberOfSeconds * 1000);
     const sessionData = newSession.cycleEnd();
-    expect(sessionData.cycleArray[sessionData.cycleArray.length - 1].cycleSecDur).toBe(mockNumberOfSeconds);
+
+    const measuredDuration = sessionData.cycleArray[sessionData.cycleArray.length - 1].cycleSecDur;
+    if (measuredDuration === null) {
+      throw new Error('cycleSecDur cannot be null.');
+    }
+    const roundedDuration = Math.round(measuredDuration);
+    expect(roundedDuration).toBe(mockNumberOfSeconds);
   });
 
   it('should reflect all tasks that have been added during the cycle', () => {
@@ -78,5 +84,22 @@ describe('PomoSessionHandler', () => {
     });
     expect(sessionData.cycleArray.length === 1);
     expect(sessionData.cycleArray[sessionData.cycleArray.length - 1].tasks.length).toBe(2);
+  });
+
+  it('should be able to mark a task as deleted', () => {
+    const newSession = new PomoSessionHandler();
+    newSession.startSession();
+    const mockTasks = [
+      {
+        taskName: 'mock task 1',
+        taskId: 1,
+        taskState: 'incomplete',
+        dateChanged: new Date()
+      }
+    ];
+    newSession.cycleStart(mockTasks);
+    newSession.markTaskInCurrentCycleAsDeleted(1);
+    const sessionData = newSession.cycleEnd();
+    expect(sessionData.cycleArray[sessionData.cycleArray.length - 1].tasks[0].taskState).toBe('deleted');
   });
 });

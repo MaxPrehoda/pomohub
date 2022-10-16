@@ -76,19 +76,17 @@ function TaskList() {
   };
 
   const deleteTask = (taskIdToDelete: number): void => {
+    const currSession: SessionInterface = readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1];
+
+    const sessionHandler = new PomoSessionHandler(currSession);
+    const updatedSession = sessionHandler.markTaskInCurrentCycleAsDeleted(taskIdToDelete);
+    writeSessionToPomoHubData(updatedSession);
+
     setTodoList(
       todoList.filter((task) => {
         return task.taskId !== taskIdToDelete;
       })
     );
-
-    const currSession: SessionInterface = readPomoHubData().storedSessions[-1];
-    const sessionHandler = new PomoSessionHandler(currSession);
-    const taskToDelete = todoList.filter((tasks) => tasks.taskId === taskIdToDelete)[0];
-    const deletedTask = taskToDelete;
-    deletedTask.taskState = 'deleted';
-    const updatedSession = sessionHandler.cycleModify(deletedTask);
-    writeSessionToPomoHubData(updatedSession);
   };
 
   return (

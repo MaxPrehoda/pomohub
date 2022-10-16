@@ -52,6 +52,16 @@ export default class PomoSessionHandler {
     return this.sessionData;
   }
 
+  markTaskInCurrentCycleAsDeleted(taskId: number): SessionInterface {
+    const currentCycle = this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1];
+    const taskIndex = currentCycle.tasks.findIndex((task) => task.taskId === taskId);
+    if (taskIndex === -1) {
+      throw new Error('Task not found in current cycle.');
+    }
+    currentCycle.tasks[taskIndex].taskState = 'deleted';
+    return this.sessionData;
+  }
+
   private forceDateTimesToBeDateTimes() {
     this.sessionData.cycleArray.forEach((cycle) => {
       if (cycle.cycleStart !== null && !(cycle.cycleStart instanceof Date)) {
