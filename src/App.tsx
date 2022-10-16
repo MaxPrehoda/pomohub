@@ -21,6 +21,9 @@ const loadOrCreateConfig = (): ConfigInterface => {
 
   const configFromLocalStorage = JSON.parse(config) as ConfigInterface;
   const newConfig: ConfigInterface = {
+    userName: configFromLocalStorage.userName
+      ? configFromLocalStorage.userName
+      : defaultConfig.userName,
     breakCycleDurationMinutes: configFromLocalStorage.breakCycleDurationMinutes
       ? configFromLocalStorage.breakCycleDurationMinutes
       : defaultConfig.breakCycleDurationMinutes,
