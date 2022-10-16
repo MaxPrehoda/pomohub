@@ -19,6 +19,13 @@ export default class PomoSessionHandler {
     this.lastCycle = this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1];
   }
 
+  getTasksInCurrentCycle(): Tasks[] {
+    if (this.sessionData.cycleArray.length === 0) {
+      return [];
+    }
+    return this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].tasks;
+  }
+
   addTaskToCurrentCycle(task: Tasks): SessionInterface {
     this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].tasks.push(task);
     return this.sessionData;

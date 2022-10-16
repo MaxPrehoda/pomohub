@@ -7,7 +7,14 @@ import PomoSessionHandler from '../backend/session';
 
 function TaskList() {
   const [task, setTask] = useState<string>('');
-  const [todoList, setTodoList] = useState<Tasks[]>([]);
+  // read the current session from PomoHubData
+  const currentSession = readPomoHubData().storedSessions.length > 0
+    ? readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1]
+    : new PomoSessionHandler().startSession();
+
+  const sessionHandler = new PomoSessionHandler(currentSession);
+  const tasksFromLastSession = sessionHandler.getTasksInCurrentCycle();
+  const [todoList, setTodoList] = useState<Tasks[]>(tasksFromLastSession);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     if (event.target.name === 'task') {
