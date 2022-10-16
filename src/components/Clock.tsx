@@ -113,6 +113,15 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
     }
   };
 
+  const resetTimer = () => {
+    if (isBreak) {
+      setTime(breakCycleDurationSeconds);
+    } else {
+      setTime(cycleDurationSeconds);
+      setIsTimerRunning(false);
+    }
+  };
+
   const checkIfUserEndedCycle = () => {
     // console.log(time);
     if (time <= 0) {
@@ -158,11 +167,29 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
   return (
     <div className="h-[230px]">
       <div className="h-[300px] w-[500px] md:w-[375px] md:h-[200px] lg:w-[450px] lg:h-[230px] lg:mb-12 bg-zinc-700 rounded-md text-center">
-        {isBreak ? (
-          <div className="text-medium text-zinc-100">Break</div>
-        ) : (
-          <div className="text-medium text-zinc-100">Work session</div>
-        )}
+        <div className="flex">
+          {isBreak ? (
+            <div className="text-medium text-zinc-100 m-auto pl-12">Break</div>
+          ) : (
+            <div className="text-medium text-zinc-100 m-auto pl-12">Work</div>
+          )}
+          <button id="reset_button" onClick={resetTimer} className="pl-2 pt-2 mr-2 pr-2 bg-transparent left-0">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="white"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+              />
+            </svg>
+          </button>
+        </div>
         <h1 className=" pt-16 md:pt-2 text-9xl lg:text-9xl font-semibold text-white pt-8">{displayTime}</h1>
         <div className="flex-row mt-3">
           <button
