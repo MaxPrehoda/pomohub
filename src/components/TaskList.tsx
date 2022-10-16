@@ -8,9 +8,10 @@ import PomoSessionHandler from '../backend/session';
 function TaskList() {
   const [task, setTask] = useState<string>('');
   // read the current session from PomoHubData
-  const currentSession = readPomoHubData().storedSessions.length > 0
-    ? readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1]
-    : new PomoSessionHandler().startSession();
+  const currentSession =
+    readPomoHubData().storedSessions.length > 0
+      ? readPomoHubData().storedSessions[readPomoHubData().storedSessions.length - 1]
+      : new PomoSessionHandler().startSession();
 
   const sessionHandler = new PomoSessionHandler(currentSession);
   const tasksFromLastSession = sessionHandler.getTasksInCurrentCycle();
@@ -18,7 +19,7 @@ function TaskList() {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     if (event.target.name === 'task') {
-      //console.log(event);
+      // console.log(event);
       setTask(event.target.value);
     }
   };
@@ -39,12 +40,12 @@ function TaskList() {
     if (currSession.cycleArray.length === 0) {
       const updatedSession = new PomoSessionHandler(currSession).cycleStart([newTask]);
       writeSessionToPomoHubData(updatedSession);
-      //console.log('ADDED NEW CYCLE, then NEW TASK', updatedSession);
+      // console.log('ADDED NEW CYCLE, then NEW TASK', updatedSession);
     } else {
       const updatedSession = new PomoSessionHandler(currSession).addTaskToCurrentCycle(newTask);
       writeSessionToPomoHubData(updatedSession);
-      //console.log('ADDED TASK TO EXISTING CYCLE THIS WORKS', updatedSession);
-      //console.log('LOCAL STORAGE THIS WORKS', readPomoHubData());
+      // console.log('ADDED TASK TO EXISTING CYCLE THIS WORKS', updatedSession);
+      // console.log('LOCAL STORAGE THIS WORKS', readPomoHubData());
     }
   };
 
@@ -130,13 +131,17 @@ function TaskList() {
         <button onClick={addTask}>Add Task</button>
       </div>
       <div className="h-[250px] overflow-auto flex-col gap-2 scrollbar mb-12 ml-0.5">
-        {todoList.map((task: Tasks, key: number) => {
-          return (
-            <div className="mb-3">
-              <Task key={key} task={task} completeTask={completeTask} deleteTask={deleteTask} />
-            </div>
-          );
-        })}
+        {todoList
+          .filter((task) => {
+            return task.taskState !== 'complete' && task.taskState !== 'deleted';
+          })
+          .map((task: Tasks, key: number) => {
+            return (
+              <div className="mb-3">
+                <Task key={key} task={task} completeTask={completeTask} deleteTask={deleteTask} />
+              </div>
+            );
+          })}
       </div>
       <div className=" h-60 w-[650px] backdrop-blur-lg fixed mt-[345px] -ml-10 pointer-events-none overflow-y-clip" />
     </div>
