@@ -56,6 +56,8 @@ export default class PomoSessionHandler {
       cycleSecDur: cycleDurationSeconds
     };
     this.updateExistingCycle(updatedCycle);
+
+    this.sessionData.numberOfCyclesCompleted += 1;
     return this.sessionData;
   }
 
