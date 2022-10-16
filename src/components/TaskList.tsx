@@ -34,15 +34,7 @@ function TaskList() {
       writeSessionToPomoHubData(updatedSession);
       //console.log('ADDED NEW CYCLE, then NEW TASK', updatedSession);
     } else {
-      // if the current session has cycles, add the new task to the latest cycle
-      // get latest cycle
-      const latestCycle = currSession.cycleArray[currSession.cycleArray.length - 1];
-      const updatedCycle = {
-        ...latestCycle,
-        tasks: [newTask, ...latestCycle.tasks]
-      };
-
-      const updatedSession = new PomoSessionHandler(currSession).updateExistingCycle(updatedCycle);
+      const updatedSession = new PomoSessionHandler(currSession).addTaskToCurrentCycle(newTask);
       writeSessionToPomoHubData(updatedSession);
       //console.log('ADDED TASK TO EXISTING CYCLE THIS WORKS', updatedSession);
       //console.log('LOCAL STORAGE THIS WORKS', readPomoHubData());

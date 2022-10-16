@@ -1,6 +1,6 @@
 import PomoSessionHandler from './session';
 
-import { mockOneTask, mockTwoTasks } from './session.mocks';
+import { mockOneTask, mockTwoTasks, mockTaskId3 } from './session.mocks';
 
 describe('PomoSessionHandler', () => {
   it('should be able to create a new session', () => {
@@ -70,5 +70,20 @@ describe('PomoSessionHandler', () => {
     newSession.updateTaskStatusInCurrentCycle(1, 'complete');
     const sessionData = newSession.cycleEnd();
     expect(sessionData.cycleArray[sessionData.cycleArray.length - 1].tasks[0].taskState).toBe('complete');
+  });
+
+  it('should be able to add a new task to a running cycle, and have that task be reflected in the cycle tasks when the cycle is completed.' , () => {
+    const newSession = new PomoSessionHandler();
+    mockTwoTasks[0].taskState = 'incomplete';
+    mockTwoTasks[1].taskState = 'incomplete';
+    newSession.startSession();
+    newSession.cycleStart(mockTwoTasks);
+    newSession.updateTaskStatusInCurrentCycle(mockTwoTasks[0].taskId, 'complete');
+    newSession.updateTaskStatusInCurrentCycle(mockTwoTasks[1].taskId, 'complete');
+    newSession.addTaskToCurrentCycle(mockTaskId3[0]);
+    const sessionData = newSession.cycleEnd();
+    const currentCycle = sessionData.cycleArray[sessionData.cycleArray.length - 1];
+    expect(currentCycle.tasks.length).toBe(3);
+    expect(currentCycle.tasks[currentCycle.tasks.length - 1].taskState).toBe('incomplete');
   });
 });

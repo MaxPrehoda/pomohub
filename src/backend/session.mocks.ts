@@ -11,6 +11,15 @@ export const mockOneTask: Tasks[] = [
     }
   ];
 
+export const mockTaskId3: Tasks[] = [
+{
+    taskName: 'mock task 3',
+    taskId: 3,
+    taskState: 'incomplete',
+    dateChanged: new Date()
+}
+];
+
 export const mockTwoTasks: Tasks[] = [
     {
       taskName: 'mock task 1',

@@ -19,6 +19,11 @@ export default class PomoSessionHandler {
     this.lastCycle = this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1];
   }
 
+  addTaskToCurrentCycle(task: Tasks): SessionInterface {
+    this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1].tasks.push(task);
+    return this.sessionData;
+  }
+
   startSession(): SessionInterface {
     this.sessionData.isRunning = true;
     this.sessionData.startingDateTime = new Date();
@@ -60,6 +65,7 @@ export default class PomoSessionHandler {
     }
     currentCycle.tasks[taskIndex].taskState = taskState;
     currentCycle.tasks[taskIndex].dateChanged = new Date();
+    this.sessionData.cycleArray[this.sessionData.cycleArray.length - 1] = currentCycle;
     return this.sessionData;
   }
 
