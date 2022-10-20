@@ -133,7 +133,8 @@ function TaskList() {
       <div className="h-[250px] overflow-auto flex-col gap-2 scrollbar mb-12 ml-0.5">
         {todoList
           .filter((task) => {
-            return task.taskState !== 'complete' && task.taskState !== 'deleted';
+            if (task) {
+            return task.taskState !== 'complete' && task.taskState !== 'deleted';}
           })
           .map((task: Tasks, key: number) => {
             return (
