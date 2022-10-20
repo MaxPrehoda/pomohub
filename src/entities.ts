@@ -1,5 +1,7 @@
 export interface ConfigInterface {
+  userName: string;
   cycleDurationMinutes: number;
+  breakCycleDurationMinutes: number;
   stepDurationMinutes: number;
   maximumCycleDurationMinutes: number;
   isExpectedVsActualEnabled: boolean;
@@ -14,16 +16,18 @@ export interface SessionInterface {
   endingDateTime: Date | null;
 }
 export interface PomoHubLocalStorageInterface {
-  username: string;
+  userName: string;
   storedSessions: Array<SessionInterface>;
 }
 
 export interface Tasks {
   taskName: string;
   taskId: number;
-  taskState: string;
+  taskState: TaskState;
   dateChanged: Date;
 }
+
+export type TaskState = 'incomplete' | 'complete' | 'deleted' | 'not started';
 
 export interface CycleData {
   tasks: Array<Tasks>;

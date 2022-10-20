@@ -2,7 +2,7 @@
 import { join } from 'path';
 
 // Packages
-import { BrowserWindow, app, ipcMain, IpcMainEvent } from 'electron';
+import { BrowserWindow, app, ipcMain } from 'electron';
 import isDev from 'electron-is-dev';
 
 app.commandLine.appendSwitch('remote-debugging-port', '8315');
@@ -71,8 +71,3 @@ app.on('window-all-closed', () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-// listen the channel `message` and resend the received message to the renderer process
-ipcMain.on('message', (event: IpcMainEvent, message: any) => {
-  console.log(message);
-  setTimeout(() => event.sender.send('message', 'hi from electron'), 500);
-});

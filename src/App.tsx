@@ -21,6 +21,12 @@ const loadOrCreateConfig = (): ConfigInterface => {
 
   const configFromLocalStorage = JSON.parse(config) as ConfigInterface;
   const newConfig: ConfigInterface = {
+    userName: configFromLocalStorage.userName
+      ? configFromLocalStorage.userName
+      : defaultConfig.userName,
+    breakCycleDurationMinutes: configFromLocalStorage.breakCycleDurationMinutes
+      ? configFromLocalStorage.breakCycleDurationMinutes
+      : defaultConfig.breakCycleDurationMinutes,
     cycleDurationMinutes: configFromLocalStorage.cycleDurationMinutes
       ? configFromLocalStorage.cycleDurationMinutes
       : defaultConfig.cycleDurationMinutes,
@@ -42,17 +48,62 @@ const loadOrCreateConfig = (): ConfigInterface => {
 
 const loadOrCreatePomoHubData = () => {
   const pomoHubData = localStorage.getItem('PomoHubData');
+  // console.log('loadOrCreatePomoHubData WORKS ONLY ONCE');
+  // console.log(pomoHubData);
   if (pomoHubData) {
     if (
       Object.keys(pomoHubData).length === Object.keys(defaultPomoHubData).length &&
       Object.keys(pomoHubData).every((key) => Object.keys(defaultPomoHubData).includes(key))
     ) {
+      console.log(`pomoHubData found in localStorage: ${pomoHubData}`);
       return JSON.parse(pomoHubData);
     }
+  } else {
+    console.log(`PomoHubData not found in localStorage, using default PomoHubData`);
+    // THIS WAS A HUGE BUG
+    localStorage.setItem('PomoHubData', JSON.stringify(defaultPomoHubData));
+    return defaultPomoHubData;
   }
-  localStorage.setItem('PomoHubData', JSON.stringify(defaultPomoHubData));
-  return defaultPomoHubData;
 };
+
+function App() {
+  const [config, setConfig] = useState(loadOrCreateConfig());
+  const [pomoHubData, setPomoHubData] = useState(loadOrCreatePomoHubData());
+  const [showModal, setShowModal] = useState(false);
+
+  const showLogs = true;
+  if (showLogs) {
+    console.log('this log doesnt work, never reset the state to new data');
+  }
+  const clock = Clock(config);
+
+  const handleSettingsModal = () => {
+    if (showModal) {
+      setShowModal(false);
+    } else {
+      setShowModal(true);
+    }
+  };
+
+  return (
+    <div className="flex flex-col h-screen transition-opacity duration-75">
+      {window.Main && (
+        <div className="flex-none display:none visiblility:none">
+          <AppBar settingsHandler={handleSettingsModal} />
+        </div>
+      )}
+      <div className="flex-auto overflow-hidden">
+        {showModal ? <SettingsModal settingsHandler2={handleSettingsModal} /> : <div />}
+        <div className=" flex flex-col justify-center items-center h-full bg-zinc-900 space-y-4 pt-44 pb-80 md:pb-0 overflow-hidden">
+          {clock}
+          <span className="hidden md:block md:pt-0 pb-20">
+            <TaskList />
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export const readPomoHubData = () => {
   const pomoHubData = localStorage.getItem('PomoHubData');
@@ -74,9 +125,9 @@ export const readLocalConfig = () => {
   throw new Error('Config not found in localStorage');
 };
 
-export const writeUsernameToPomoHubData = (username: string) => {
+export const writeuserNameToPomoHubData = (userName: string) => {
   const pomoHubData = readPomoHubData();
-  pomoHubData.username = username;
+  pomoHubData.userName = userName;
   localStorage.setItem('PomoHubData', JSON.stringify(pomoHubData));
 };
 
@@ -97,54 +148,5 @@ export const writeSessionToPomoHubData = (session: SessionInterface) => {
   }
   localStorage.setItem('PomoHubData', JSON.stringify(pomoHubData));
 };
-
-const logPomoHubData = (pomoHubData: PomoHubLocalStorageInterface) => {
-  console.log('Username:', pomoHubData.username);
-  console.log('Stored Sessions:', pomoHubData.storedSessions);
-};
-
-const logLocalConfigs = (config: ConfigInterface) => {
-  console.log(`Local Configs:\n${JSON.stringify(config, null, 2)}`);
-};
-
-function App() {
-  const [config, setConfig] = useState(loadOrCreateConfig());
-  const [pomoHubData, setPomoHubData] = useState(loadOrCreatePomoHubData());
-  const [showModal, setShowModal] = useState(false);
-
-  const showLogs = true;
-  if (showLogs) {
-    logPomoHubData(pomoHubData);
-    logLocalConfigs(config);
-  }
-  const clock = Clock(config);
-
-  const handleSettingsModal = () => {
-    if (showModal) {
-      setShowModal(false);
-    } else {
-      setShowModal(true);
-    }
-  };
-
-  return (
-    <div className="flex flex-col h-screen transition-opacity duration-75">
-      {window.Main && (
-        <div className="flex-none display:none visiblility:none">
-          <AppBar settingsHandler={handleSettingsModal} />
-        </div>
-      )}
-      <div className="flex-auto overflow-hidden">
-        {showModal ? <SettingsModal settingsHandler2={handleSettingsModal} /> : <div />}
-        <div className=" flex flex-col justify-center items-center h-full bg-zinc-900 space-y-4 pt-44 pb-80 md:pb-0">
-          {clock}
-          <span className="hidden md:block md:pt-0 pb-20">
-            <TaskList />
-          </span>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default App;
