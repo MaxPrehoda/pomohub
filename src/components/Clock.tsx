@@ -166,7 +166,7 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
 
   return (
     <div className="h-[230px]">
-      <div className="h-[300px] w-[500px] md:w-[375px] md:h-[200px] lg:w-[450px] lg:h-[230px] lg:mb-12 bg-zinc-700 rounded-md text-center">
+      <div className="h-[300px] w-[500px] md:w-[400px] md:h-[245px] lg:w-[450px] lg:h-[230px] lg:mb-12 bg-zinc-700 rounded-md text-center">
         <div className="flex">
           {isBreak ? (
             <div className="text-medium text-zinc-100 m-auto pl-12">Break</div>

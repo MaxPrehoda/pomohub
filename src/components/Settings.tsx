@@ -203,14 +203,14 @@ function SettingsModal({ settingsHandler2 }: Props) {
 
   return (
     <div className="z-20 fixed h-full w-full flex items-center justify-center transition-all pb-10">
-      <div className="w-[750px] h-[600px] lg:h-[650px] text-center bg-zinc-700 rounded-lg text-white">
-        <div className="flex flex-col pl-[110px] gap-8 w-[500px] pt-24 font-semibold">
+      <div className="w-[750px] h-[600px] lg:h-[650px] text-center bg-zinc-700 rounded-lg text-white ">
+        <div className="flex flex-col pl-[110px] gap-8 w-[500px] pt-24 font-semibold -ml-6 ">
           <div className="flex flex-row w-[700px]">
             <div className="flex-col w-26 gap-4 space-y-10">
               {userNameInput}
               <button
                 /* onClick={sessionHandler} */
-                className="bg-pink-400 hover:bg-pink-300 text-white font-semibold py-2 px-4 rounded"
+                className="bg-pink-400 hover:bg-pink-300 text-white font-semibold py-2 px-4 rounded-md"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -246,22 +246,24 @@ function SettingsModal({ settingsHandler2 }: Props) {
               <div>
                 <RangeSlider {...breakSliderProps} classes="additional-css-classes" />
               </div>
-              <button
-                onClick={settingsHandler2}
-                className="bg-zinc-50 bg-opacity-20 hover:bg-zinc-50 hover:bg-opacity-30 text-white font-semibold py-2 px-4 rounded ml-[200px] mt-8 -ml-0 border-2 border-pink-400"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  className="w-6 h-6 inline"
+              <div className="">
+                <button
+                  onClick={settingsHandler2}
+                  className="bg-zinc-50 bg-opacity-20 hover:bg-zinc-50 hover:bg-opacity-30 text-white font-semibold py-2 px-4 rounded ml-[200px] -ml-0 border-2 border-pink-400"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-                Close Settings
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="w-6 h-6 inline"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                  Close Settings
+                </button>
+              </div>
             </div>
           </div>
         </div>
