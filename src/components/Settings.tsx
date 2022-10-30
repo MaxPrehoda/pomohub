@@ -104,7 +104,7 @@ function SettingsModal({ settingsHandler2 }: Props) {
 
   const userNameInput = (
     <div className="flex flex-row">
-      <button className="inline w-[50px] h-[50px] rounded-md bg-pink-400 mt-4 mr-2">
+      <button className="inline w-[50px] h-[50px] rounded-md bg-pink-400 hover:bg-pink-300 mt-4 mr-2">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="inline w-6 h-6">
           <path
             fillRule="evenodd"
@@ -120,7 +120,7 @@ function SettingsModal({ settingsHandler2 }: Props) {
             type="text"
             name="userName"
             id="userName"
-            className="block  w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
+            className="block text-white w-full px-3 py-2 bg-transparent border border-zinc-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-400 focus:border-pink-400 sm:text-sm"
             placeholder={userName}
             onChange={handleuserNameChange}
           />
