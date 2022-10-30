@@ -103,7 +103,16 @@ function SettingsModal({ settingsHandler2 }: Props) {
   // );
 
   const userNameInput = (
-    <div className="flex flex-col">
+    <div className="flex flex-row">
+      <button className="inline w-[50px] h-[50px] rounded-md bg-pink-400 mt-4 mr-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="inline w-6 h-6">
+          <path
+            fillRule="evenodd"
+            d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </button>
       <label htmlFor="userName" className="text-sm font-medium text-gray-700">
         userName
         <div className="mt-1">
@@ -111,7 +120,7 @@ function SettingsModal({ settingsHandler2 }: Props) {
             type="text"
             name="userName"
             id="userName"
-            className="block  w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            className="block  w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500 sm:text-sm"
             placeholder={userName}
             onChange={handleuserNameChange}
           />
@@ -120,7 +129,7 @@ function SettingsModal({ settingsHandler2 }: Props) {
     </div>
   );
 
-  const sliderValueChanged = useCallback((val,text) => {
+  const sliderValueChanged = useCallback((val, text) => {
     console.log(`sliderValueChanged: ${val} ${text}`);
     if (text === 'Step Duration (minutes)') {
       console.log('NEW VALUE', val);
@@ -163,7 +172,7 @@ function SettingsModal({ settingsHandler2 }: Props) {
       label: 'Step Duration (minutes)',
       value: sliderParentVal,
       step: 1,
-      onChange: (e) => sliderValueChanged(e,'Step Duration (minutes)')
+      onChange: (e) => sliderValueChanged(e, 'Step Duration (minutes)')
     }),
     [sliderParentVal]
   );
@@ -194,15 +203,29 @@ function SettingsModal({ settingsHandler2 }: Props) {
 
   return (
     <div className="z-20 fixed h-full w-full flex items-center justify-center transition-all pb-10">
-      <div className="w-[750px] h-[650px] text-center bg-zinc-700 rounded-lg text-white">
+      <div className="w-[750px] h-[600px] lg:h-[650px] text-center bg-zinc-700 rounded-lg text-white">
         <div className="flex flex-col pl-[110px] gap-8 w-[500px] pt-24 font-semibold">
           <div className="flex flex-row w-[700px]">
             <div className="flex-col w-26 gap-4 space-y-10">
               {userNameInput}
               <button
                 /* onClick={sessionHandler} */
-                className="bg-emerald-500 hover:bg-emerald-400 text-white font-semibold py-2 px-4 rounded"
+                className="bg-pink-400 hover:bg-pink-300 text-white font-semibold py-2 px-4 rounded"
               >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="currentColor"
+                  className="mr-2 inline w-6 h-6"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
                 View session summary
               </button>
               <div className="w-18">
@@ -226,11 +249,21 @@ function SettingsModal({ settingsHandler2 }: Props) {
             </div>
           </div>
           <button
-                onClick={settingsHandler2}
-                className="bg-red-400 hover:bg-red-300 text-white font-semibold py-2 px-4 rounded ml-[200px] mt-8"
-              >
-                Close Settings
-              </button>
+            onClick={settingsHandler2}
+            className="bg-pink-400 hover:bg-pink-300 text-white font-semibold py-2 px-4 rounded ml-[200px] mt-8"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className="w-6 h-6 inline"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            Close Settings
+          </button>
         </div>
       </div>
     </div>
