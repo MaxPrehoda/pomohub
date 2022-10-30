@@ -92,7 +92,11 @@ export default class PomoSessionHandler {
   }
 
   cycleStart(savedTasks: Tasks[]): SessionInterface {
-    const unfinishedTasks = savedTasks.filter((task) => task.taskState === 'incomplete');
+    const unfinishedTasks = savedTasks.filter((task) => {
+      if (task) {
+        return task.taskState === 'incomplete';
+      }
+    });
     const currCycle: CycleData = {
       tasks: unfinishedTasks,
       cycleStart: new Date(),
