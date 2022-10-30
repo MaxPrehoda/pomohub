@@ -29,3 +29,43 @@
   border: 2px solid #3f3f41;
   border-radius: 50vh;
 }
+
+.slidecontainer {
+  width: 100%; 
+}
+
+.slider {
+  -webkit-appearance: none;  
+  appearance: none;
+  width: 100%; 
+  height: 10px; 
+  background: #d3d3d3; 
+  outline: none; /* Remove outline */
+  opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+  -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+  transition: opacity .2s;
+  border-radius: 5px;
+}
+
+.slider:hover {
+  opacity: 1; /* Fully shown on mouse-over */
+}
+
+/* The slider handle -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) COPILOT XD*/ 
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 20px; /* Set a specific slider handle width */
+  height: 20px; /* Slider handle height */
+  background: #131313; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 5px;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px; /* Set a specific slider handle width */
+  height: 20px; /* Slider handle height */
+  background: #131313; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 5px;
+}
