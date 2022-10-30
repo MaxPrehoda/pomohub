@@ -202,11 +202,11 @@ function SettingsModal({ settingsHandler2 }: Props) {
   );
 
   return (
-    <div className="z-20 fixed h-full w-full flex items-center justify-center transition-all pb-10">
+    <div className="z-20 fixed h-full w-full flex items-center justify-center transition-all pb-10 mt-9">
       <div className="w-[750px] h-[600px] lg:h-[650px] text-center bg-zinc-700 rounded-lg text-white ">
-        <div className="flex flex-col pl-[110px] gap-8 w-[500px] pt-24 font-semibold -ml-6 ">
+        <div className="flex flex-col pl-[110px] gap-8 w-[500px] pt-32 font-semibold -ml-6">
           <div className="flex flex-row w-[700px]">
-            <div className="flex-col w-26 gap-4 space-y-10">
+            <div className="flex-col w-26 gap-8 space-y-16">
               {userNameInput}
               <button
                 /* onClick={sessionHandler} */
@@ -236,7 +236,7 @@ function SettingsModal({ settingsHandler2 }: Props) {
               </div>
             </div>
             <div />
-            <div className="flex-col w-26 gap-4 space-y-10 ml-20 mt-12">
+            <div className="flex-col w-26 gap-4 space-y-16 ml-20 mt-2">
               <div>
                 <RangeSlider {...sliderProps} classes="additional-css-classes" />
               </div>

@@ -166,12 +166,98 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
 
   return (
     <div className="h-[230px]">
-      <div className="h-[300px] w-[500px] md:w-[400px] md:h-[245px] lg:w-[450px] lg:h-[230px] lg:mb-12 bg-zinc-700 rounded-md text-center">
+      <div className="h-[300px] w-[500px] md:w-[400px] md:h-[245px] lg:w-[450px] lg:h-[240px] lg:mb-12 bg-zinc-700 rounded-md text-center">
         <div className="flex">
           {isBreak ? (
-            <div className="text-medium text-zinc-100 m-auto pl-12">Break</div>
+            <div className="text-medium text-zinc-100 m-auto pl-12 pt-1 font-semibold">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="ionicon"
+                viewBox="0 0 512 512"
+                className="inline w-6 h-6 mr-1 mb-1"
+              >
+                <title>Bed</title>
+                <path
+                  d="M384 240H96V136a40.12 40.12 0 0140-40h240a40.12 40.12 0 0140 40v104zM48 416V304a64.19 64.19 0 0164-64h288a64.19 64.19 0 0164 64v112"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="32"
+                />
+                <path
+                  d="M48 416v-8a24.07 24.07 0 0124-24h368a24.07 24.07 0 0124 24v8M112 240v-16a32.09 32.09 0 0132-32h80a32.09 32.09 0 0132 32v16M256 240v-16a32.09 32.09 0 0132-32h80a32.09 32.09 0 0132 32v16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="32"
+                />
+              </svg>{' '}
+              Break
+            </div>
           ) : (
-            <div className="text-medium text-zinc-100 m-auto pl-12">Work</div>
+            <div className="text-medium text-zinc-100 m-auto pl-12 pt-1 font-semibold">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="ionicon"
+                viewBox="0 0 512 512"
+                className="inline w-6 h-6 mr-1 mb-1"
+              >
+                <rect
+                  x="32"
+                  y="96"
+                  width="64"
+                  height="368"
+                  rx="16"
+                  ry="16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinejoin="round"
+                  strokeWidth="32"
+                />
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="32"
+                  d="M112 224h128M112 400h128"
+                />
+                <rect
+                  x="112"
+                  y="160"
+                  width="128"
+                  height="304"
+                  rx="16"
+                  ry="16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinejoin="round"
+                  strokeWidth="32"
+                />
+                <rect
+                  x="256"
+                  y="48"
+                  width="96"
+                  height="416"
+                  rx="16"
+                  ry="16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinejoin="round"
+                  strokeWidth="32"
+                />
+                <path
+                  d="M422.46 96.11l-40.4 4.25c-11.12 1.17-19.18 11.57-17.93 23.1l34.92 321.59c1.26 11.53 11.37 20 22.49 18.84l40.4-4.25c11.12-1.17 19.18-11.57 17.93-23.1L445 115c-1.31-11.58-11.42-20.06-22.54-18.89z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeLinejoin="round"
+                  strokeWidth="32"
+                />
+              </svg>
+              Work
+            </div>
           )}
           <button id="reset_button" onClick={resetTimer} className="pl-2 pt-2 mr-2 pr-2 bg-transparent left-0">
             <svg
@@ -191,7 +277,7 @@ function Clock({ cycleDurationMinutes, stepDurationMinutes, maximumCycleDuration
           </button>
         </div>
         <h1 className=" pt-16 md:pt-2 text-9xl lg:text-9xl font-semibold text-white pt-8">{displayTime}</h1>
-        <div className="flex-row mt-3">
+        <div className="flex-row mt-3 pt-2">
           <button
             className="bg-red-400 rounded-md pl-2 mr-2 pr-2 pt-2 pb-2"
             onClick={() => {
