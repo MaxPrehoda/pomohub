@@ -17,7 +17,7 @@ function Task({ task, deleteTask, completeTask }: Props) {
         }}
       />
       <input
-        className="bg-transparent outline-none placeholder-white"
+        className="bg-transparent outline-none placeholder-white w-[200px] sm:w-[350px]"
         name="task"
         placeholder={task.taskName}
       />

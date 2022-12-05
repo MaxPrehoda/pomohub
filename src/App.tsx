@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Summary from './components/Summary';
 import AppBar from './components/AppBar';
 import Clock from './components/Clock';
 import TaskList from './components/TaskList';
@@ -103,7 +104,7 @@ function App() {
       </div>
     </div>
   );
-}
+};
 
 export const readPomoHubData = () => {
   const pomoHubData = localStorage.getItem('PomoHubData');
@@ -148,5 +149,4 @@ export const writeSessionToPomoHubData = (session: SessionInterface) => {
   }
   localStorage.setItem('PomoHubData', JSON.stringify(pomoHubData));
 };
-
 export default App;
